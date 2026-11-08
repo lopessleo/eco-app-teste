@@ -13,7 +13,9 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.45 'Raleway', system-ui, sans-serif; }
 main { max-width: 560px; margin: 0 auto; padding: 16px 16px 40px; }
-header img { height: 30px; display: block; margin: 4px 0 14px; }
+header { display: flex; justify-content: space-between; align-items: center; flex-direction: row-reverse; margin: 4px 0 14px; }
+header img { height: 30px; display: block; }
+.volta { color: var(--muted); text-decoration: none; font-weight: 700; padding: 8px 0; }
 h1 { font-size: 24px; margin: 0 0 4px; }
 .sub { color: var(--muted); margin: 0 0 16px; }
 .passo { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
@@ -40,7 +42,7 @@ button:disabled { opacity: .5; }
 </head>
 <body>
 <main>
-  <header><img src="brand/logo-horizontal.png" alt="ecocreator"></header>
+  <header><a href="./" class="volta">← Voltar ao app</a><img src="brand/logo-horizontal.png" alt="ecocreator"></header>
   <h1>Atualizar o Eco do protótipo</h1>
   <p class="sub">Força total nos motores e no giro, e as rodas girando para o lado certo. Leva uns 5 minutos.</p>
 

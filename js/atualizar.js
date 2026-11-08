@@ -156,7 +156,7 @@ function decide() {
   feito('p3');
   if (variante.arquivo === ARQUIVO_NORMAL) {
     msg('m3', '✅ As rodas já estão certas.', 'ok');
-    $('#t4').textContent = 'Nada a acertar. Pronto! Pode fechar esta página e usar o app normal.';
+    $('#t4').textContent = 'Nada a acertar. Pronto! Pode voltar ao app pelo botão lá em cima.';
     $('#acertar').classList.add('hidden');
     feito('p4');
     return libera('p4');
@@ -177,7 +177,7 @@ $('.opcoes[data-q=conferir]').addEventListener('click', (e) => {
   if (!b) return;
   if (b.dataset.v === '1') {
     feito('p4');
-    msg('m4', '✅ Pronto! Pode fechar esta página e usar o app normal.', 'ok');
+    msg('m4', '✅ Pronto! Pode voltar ao app pelo botão lá em cima.', 'ok');
   } else {
     msg('m4', 'Mande um print desta tela para quem te passou este link.', 'erro');
   }
