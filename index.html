@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0e1218">
+  <title>Ecocreator</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/cenarios.css">
+  <link rel="stylesheet" href="css/program.css">
+  <!-- ajustes feitos no Estúdio de interface (lançador): por último, vencem o resto -->
+  <link rel="stylesheet" href="ajustes.css">
+</head>
+<body>
+  <!-- Abertura: o logo da ecocreator aparece e some (uma vez por sessão; toque pula; dentro do emulador não aparece) -->
+  <div id="boot" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" class="boot-logo" role="img" aria-label="ecocreator" viewBox="0 0 1116 683.97"><g transform="translate(297.41 0) scale(1.2799)"><path class="folha" fill="#1A8E5D" fill-rule="evenodd" d="M156.62 306.01C154.29 305.91 152.04 305.75 151.62 305.66C151.21 305.58 149.19 305.39 147.12 305.25C143.14 304.97 137.46 304.25 134.61 303.65C133.65 303.45 132.20 303.22 131.38 303.12C130.55 303.03 128.24 302.57 126.25 302.09C124.26 301.62 122.34 301.18 122.00 301.12C117.62 300.28 103.12 295.58 99.96 293.98C99.46 293.72 98.33 293.24 97.46 292.91C94.54 291.81 84.08 286.39 81.00 284.38C80.52 284.07 79.00 283.08 77.62 282.18C73.62 279.57 69.02 276.24 67.18 274.62C66.93 274.41 65.64 273.31 64.30 272.19C58.78 267.56 51.87 260.56 47.59 255.25C46.65 254.08 45.81 253.07 45.72 253.00C45.42 252.76 40.89 246.61 39.83 245.00C39.24 244.11 38.67 243.26 38.56 243.12C38.46 242.99 37.82 242.03 37.15 241.00C36.48 239.97 35.72 238.82 35.46 238.45C35.21 238.08 35.00 237.72 35.00 237.65C35.00 237.59 34.55 236.86 34.00 236.03C33.45 235.20 33.00 234.46 33.00 234.39C33.00 234.32 32.12 232.71 31.03 230.82C26.66 223.16 22.20 213.35 18.54 203.38C18.14 202.28 17.69 201.04 17.53 200.62C14.97 193.64 10.06 175.88 9.01 169.75C8.85 168.86 8.39 166.61 7.98 164.75C7.56 162.89 7.07 160.36 6.88 159.12C6.46 156.35 5.59 151.34 5.39 150.50C5.31 150.16 5.08 148.53 4.88 146.88C4.17 140.94 3.73 137.58 3.36 135.25C2.95 132.71 2.96 128.72 3.38 128.58C3.61 128.51 4.95 129.51 6.84 131.17C7.46 131.72 9.35 133.00 13.19 135.48C21.87 141.07 39.17 148.10 51.62 151.09C52.45 151.29 54.19 151.74 55.50 152.08C56.81 152.43 58.83 152.89 60.00 153.10C61.17 153.31 63.48 153.77 65.12 154.13C66.78 154.49 69.34 154.94 70.83 155.13C72.32 155.33 73.62 155.54 73.72 155.61C73.82 155.67 75.30 155.90 77.00 156.12C78.70 156.35 80.17 156.58 80.26 156.63C80.36 156.69 82.31 156.91 84.60 157.12C86.89 157.33 89.24 157.60 89.82 157.73C90.40 157.85 92.39 158.03 94.25 158.13C96.11 158.22 98.24 158.40 99.00 158.53C102.02 159.05 120.75 159.25 139.00 158.96C158.10 158.65 169.96 158.87 174.50 159.61C178.28 160.22 181.47 160.37 181.64 159.94C181.76 159.60 181.09 157.17 180.51 155.88C180.39 155.60 179.98 154.64 179.62 153.75C179.25 152.86 178.51 151.08 177.97 149.81C177.44 148.54 176.54 146.40 175.98 145.06C174.85 142.38 174.60 141.80 173.65 139.70C173.29 138.92 173.00 138.21 173.00 138.12C173.00 138.03 172.65 137.21 172.22 136.29C171.80 135.37 171.08 133.72 170.62 132.62C170.17 131.53 169.21 129.33 168.50 127.75C167.79 126.17 167.12 124.59 167.01 124.25C166.90 123.91 166.51 122.95 166.14 122.12C165.19 119.99 161.87 111.60 160.21 107.12C158.25 101.86 155.22 92.04 154.88 89.88C154.80 89.33 154.57 88.37 154.39 87.75C153.40 84.41 152.39 75.89 152.46 71.38C152.63 59.46 156.17 49.48 164.33 37.88C171.82 27.25 186.14 14.34 197.38 8.10C198.34 7.57 199.57 6.87 200.12 6.56C206.72 2.78 212.29 1.72 212.90 4.14C213.27 5.60 212.81 12.08 212.12 15.12C211.75 16.77 211.29 18.91 211.10 19.88C210.91 20.84 210.42 22.92 210.01 24.50C209.61 26.08 208.88 28.95 208.39 30.88C207.91 32.80 207.05 36.12 206.49 38.25C205.92 40.38 205.36 42.58 205.24 43.12C205.13 43.67 204.73 45.25 204.36 46.62C203.99 48.00 203.38 50.42 203.00 52.00C202.62 53.58 202.03 56.00 201.68 57.38C199.23 67.10 198.44 74.85 199.67 77.12C199.97 77.67 200.49 78.74 200.83 79.50C202.59 83.48 209.55 90.53 215.17 94.03C217.74 95.64 224.76 99.00 225.53 99.00C225.71 99.00 226.98 99.39 228.36 99.86C233.70 101.69 243.97 102.68 250.45 101.99C262.15 100.74 269.42 96.20 273.70 87.49C274.72 85.39 276.71 78.21 277.11 75.12C277.20 74.44 277.62 72.19 278.03 70.12C278.44 68.06 278.93 65.19 279.11 63.75C279.50 60.70 280.97 51.87 281.91 47.00C282.26 45.14 282.71 42.78 282.90 41.75C284.78 31.47 288.24 25.78 291.63 27.39C293.28 28.18 300.75 36.60 300.75 37.68C300.75 37.79 301.18 38.49 301.70 39.25C305.29 44.44 310.76 56.38 312.64 63.12C319.01 85.92 317.95 101.37 308.73 120.00C307.02 123.45 303.99 128.76 302.03 131.75C301.53 132.51 301.01 133.31 300.88 133.52C300.25 134.51 297.11 139.26 296.29 140.45C295.78 141.18 295.21 142.05 295.00 142.37C294.79 142.69 293.21 145.07 291.48 147.66C289.74 150.26 288.00 152.90 287.60 153.55C287.20 154.19 286.45 155.39 285.94 156.21C285.42 157.03 285.00 157.78 285.00 157.88C285.00 157.98 284.62 158.69 284.15 159.47C280.66 165.24 276.72 174.30 274.84 180.88C271.38 193.02 271.00 198.24 270.96 234.46C270.95 253.29 271.04 252.31 269.41 251.37C268.98 251.12 267.84 250.27 266.88 249.48C264.71 247.69 260.37 244.33 257.88 242.50C256.85 241.74 255.37 240.65 254.60 240.06C253.82 239.48 253.11 239.00 253.01 239.00C252.92 239.00 252.21 238.52 251.44 237.94C249.34 236.35 248.04 235.43 247.10 234.88C246.63 234.60 245.83 234.08 245.31 233.73C238.48 229.00 225.69 222.03 214.25 216.81C212.00 215.78 202.68 212.00 202.40 212.00C202.29 212.00 201.85 211.84 201.41 211.64C200.23 211.09 196.45 209.82 191.62 208.35C190.39 207.97 189.26 207.58 189.12 207.48C188.98 207.37 188.20 207.12 187.37 206.93C186.55 206.73 184.53 206.22 182.88 205.80C181.22 205.38 178.75 204.79 177.38 204.50C176.00 204.20 174.20 203.80 173.38 203.60C172.55 203.41 170.75 203.13 169.38 202.98C168.00 202.84 166.48 202.62 166.00 202.50C165.52 202.37 163.89 202.15 162.38 202.00C160.86 201.86 158.95 201.60 158.12 201.44C155.67 200.96 136.16 201.04 134.88 201.54C133.41 202.10 133.47 202.59 135.05 203.05C135.78 203.27 136.99 203.70 137.75 204.00C138.51 204.31 139.69 204.71 140.38 204.90C141.06 205.09 141.85 205.36 142.12 205.49C142.59 205.72 143.23 205.96 145.50 206.75C148.26 207.72 149.23 208.09 150.15 208.52C150.72 208.78 151.31 209.00 151.46 209.00C151.61 209.00 152.22 209.22 152.81 209.48C153.39 209.75 155.06 210.44 156.50 211.01C157.94 211.58 159.46 212.20 159.88 212.38C160.29 212.57 161.19 212.94 161.88 213.21C164.23 214.13 168.10 215.77 168.99 216.24C169.47 216.49 170.27 216.84 170.75 217.02C171.84 217.42 180.24 221.36 183.61 223.06C184.99 223.76 187.64 225.09 189.50 226.03C193.37 227.98 195.92 229.36 197.43 230.33C198.01 230.70 198.58 231.00 198.69 231.00C198.80 231.00 199.56 231.45 200.38 231.99C201.20 232.54 201.95 232.99 202.04 232.99C202.14 233.00 202.87 233.42 203.68 233.94C205.37 235.02 205.61 235.17 207.62 236.38C208.45 236.87 209.63 237.60 210.25 238.01C210.87 238.41 211.65 238.86 211.99 239.01C212.33 239.16 213.08 239.67 213.66 240.14C214.24 240.61 214.81 241.00 214.93 241.00C215.06 241.00 215.76 241.45 216.50 242.00C217.24 242.55 217.94 243.00 218.05 243.00C218.17 243.00 218.83 243.45 219.53 244.00C220.23 244.55 220.91 245.00 221.04 245.00C221.18 245.00 221.76 245.38 222.33 245.84C222.91 246.31 223.66 246.83 224.00 247.00C224.34 247.18 225.13 247.71 225.75 248.18C226.37 248.64 228.17 249.91 229.75 250.99C231.33 252.07 233.19 253.36 233.88 253.86C236.76 255.95 245.28 262.33 247.25 263.86C248.42 264.77 249.77 265.78 250.25 266.10C250.73 266.43 251.40 266.96 251.74 267.29C252.07 267.61 252.93 268.32 253.65 268.88C258.08 272.26 268.91 281.49 270.31 283.08C271.66 284.61 268.24 286.75 261.26 288.74C259.41 289.27 257.72 289.86 256.62 290.36C256.21 290.55 254.86 291.01 253.62 291.40C252.39 291.78 251.04 292.23 250.62 292.40C250.21 292.57 249.03 292.95 248.00 293.24C246.97 293.53 245.79 293.89 245.38 294.03C242.43 295.04 226.35 299.24 225.39 299.25C225.13 299.25 224.17 299.47 223.27 299.74C220.86 300.45 216.92 301.25 215.83 301.25C215.30 301.25 214.16 301.48 213.29 301.75C212.42 302.03 211.37 302.25 210.95 302.25C210.54 302.25 209.54 302.42 208.73 302.63C207.92 302.84 206.21 303.12 204.94 303.26C203.67 303.39 201.89 303.67 201.00 303.87C200.11 304.07 198.76 304.24 198.00 304.25C197.24 304.26 196.18 304.38 195.62 304.52C195.07 304.66 192.04 304.93 188.88 305.12C185.71 305.32 181.78 305.59 180.12 305.73C176.03 306.08 161.82 306.25 156.62 306.01Z"/></g><g transform="translate(0 428.97)"><path class="eco" fill="#1A8E5D" fill-rule="evenodd" d="M45.88 252.02C44.36 251.91 42.51 251.69 41.75 251.54C40.99 251.38 39.81 251.15 39.12 251.03C33.40 250.01 26.16 247.18 21.62 244.17C19.14 242.53 13.03 236.60 11.98 234.82C9.14 229.99 8.29 228.34 7.33 225.80C6.14 222.60 5.62 220.92 5.14 218.62C4.96 217.80 4.70 216.68 4.55 216.12C4.28 215.14 4.01 212.89 3.49 207.25C3.00 201.84 3.31 90.39 3.83 86.12C4.22 82.94 5.92 75.09 6.49 73.88C6.62 73.60 7.25 72.03 7.89 70.38C8.54 68.72 9.20 67.21 9.36 67.00C9.53 66.79 9.99 66.06 10.38 65.38C15.03 57.20 24.21 50.34 34.00 47.74C34.89 47.51 36.48 47.08 37.53 46.80C38.58 46.52 40.61 46.16 42.03 46.01C43.46 45.86 45.66 45.63 46.92 45.49C49.87 45.18 58.13 45.18 61.08 45.49C62.34 45.63 64.56 45.86 66.00 46.01C69.64 46.40 75.48 47.91 79.11 49.41C81.49 50.39 85.74 52.53 86.46 53.10C86.83 53.39 87.52 53.90 88.00 54.23C91.03 56.35 94.22 59.58 96.40 62.75C97.37 64.16 99.75 68.19 99.75 68.42C99.75 68.49 100.15 69.46 100.65 70.58C101.89 73.42 103.59 78.96 103.88 81.12C103.97 81.81 104.20 83.28 104.39 84.38C105.18 88.98 105.30 94.76 105.28 127.58C105.28 145.57 105.20 160.50 105.12 160.76C104.82 161.72 103.98 161.75 71.49 161.75C43.27 161.75 39.80 161.79 39.31 162.14L38.75 162.53L38.75 180.58C38.76 203.68 38.94 206.25 40.87 210.41C44.98 219.26 62.98 219.49 67.37 210.75C67.68 210.13 68.26 208.72 68.65 207.62L69.36 205.62L69.49 195.62C69.59 188.14 69.71 185.48 69.95 185.06L70.27 184.50L87.23 184.50C103.29 184.50 104.22 184.52 104.76 184.96L105.32 185.41L105.35 193.77C105.40 210.20 103.67 221.69 100.15 228.38C99.93 228.79 99.75 229.21 99.75 229.32C99.75 229.43 99.36 230.14 98.88 230.89C98.39 231.64 98.00 232.30 98.00 232.36C98.00 232.58 95.71 235.86 94.94 236.75C94.49 237.27 93.75 238.16 93.30 238.72C89.54 243.39 80.72 248.31 72.38 250.37C66.13 251.92 54.60 252.63 45.88 252.02ZM170.88 252.00C167.52 251.77 163.64 251.16 162.12 250.64C161.57 250.44 160.62 250.21 160.00 250.11C157.14 249.67 151.16 247.17 147.00 244.67C144.27 243.03 138.24 237.10 136.29 234.12C133.72 230.23 131.14 224.23 130.21 220.00C129.70 217.70 129.00 214.31 128.58 212.12C128.06 209.45 127.74 95.02 128.23 89.62C129.49 75.95 133.18 66.32 140.10 58.67C141.97 56.60 146.52 52.99 148.63 51.91C152.86 49.73 155.50 48.61 157.92 47.98C164.83 46.17 164.53 46.22 172.25 45.48C175.75 45.15 184.33 45.28 188.50 45.73C206.21 47.63 218.46 55.58 224.74 69.25C226.02 72.05 227.61 76.83 228.00 79.05C228.14 79.92 228.44 81.41 228.65 82.38C229.78 87.50 230.61 111.39 229.70 112.58C229.30 113.11 194.91 113.26 194.39 112.74C194.23 112.58 194.12 108.93 194.08 103.18C194.01 92.91 193.96 92.05 193.27 89.88C191.83 85.30 189.35 82.86 184.38 81.11C182.32 80.38 175.72 80.44 173.25 81.21C167.43 83.02 164.59 86.93 163.86 94.12C163.42 98.55 163.33 196.77 163.76 202.61C164.34 210.24 166.88 214.21 172.54 216.29C175.59 217.41 181.50 217.46 184.69 216.40C188.30 215.19 190.96 213.02 192.18 210.28C194.01 206.19 193.97 206.50 194.01 195.56C194.05 187.47 194.12 185.52 194.41 185.06L194.76 184.50L211.99 184.50C227.85 184.50 229.25 184.53 229.64 184.92C230.70 185.98 229.84 209.59 228.51 216.25C228.25 217.56 227.98 218.91 227.91 219.25C227.38 221.92 225.55 226.88 223.76 230.50C221.31 235.46 215.75 241.56 211.04 244.48C204.87 248.29 200.80 249.74 191.38 251.50C188.22 252.09 176.32 252.38 170.88 252.00ZM294.38 252.00C291.65 251.84 288.29 251.30 285.88 250.63C285.19 250.44 284.18 250.20 283.62 250.10C281.72 249.76 276.52 247.78 273.83 246.37C260.72 239.50 253.23 226.35 252.00 208.00C251.66 202.95 251.67 94.59 252.01 89.50C253.36 69.27 261.75 56.13 277.68 49.32C288.12 44.85 308.56 43.87 320.75 47.25C321.64 47.50 322.99 47.84 323.75 48.01C329.02 49.21 336.43 53.61 341.00 58.24C344.18 61.47 349.00 68.89 349.00 70.55C349.00 70.74 349.15 71.11 349.33 71.38C349.51 71.65 349.98 72.89 350.36 74.12C350.75 75.36 351.28 77.02 351.53 77.81C351.79 78.60 352.00 79.54 352.00 79.89C352.00 80.24 352.22 81.51 352.49 82.70C353.75 88.36 353.79 90.81 353.70 150.75C353.61 209.15 353.62 208.53 352.50 214.62C352.25 216.00 351.97 217.57 351.88 218.12C351.79 218.68 351.57 219.57 351.38 220.12C351.19 220.68 350.72 222.14 350.34 223.38C349.96 224.61 349.51 225.91 349.33 226.25C349.15 226.59 349.00 227.06 349.00 227.28C349.00 227.51 348.84 227.83 348.63 227.99C348.43 228.16 348.20 228.54 348.11 228.84C347.91 229.51 345.93 232.97 344.79 234.62C341.04 240.09 335.15 244.87 328.92 247.51C327.93 247.92 326.79 248.43 326.38 248.63C325.64 249.00 323.97 249.49 321.25 250.14C320.49 250.32 319.43 250.58 318.88 250.72C313.62 252.07 303.98 252.57 294.38 252.00ZM419.12 252.01C416.10 251.82 412.94 251.30 410.61 250.62C409.91 250.42 408.79 250.18 408.11 250.09C405.22 249.71 396.93 245.90 393.62 243.43C383.26 235.70 377.94 224.44 376.50 207.25C375.98 201.08 376.28 90.71 376.83 86.62C377.61 80.78 379.15 74.58 380.74 70.88C380.98 70.33 381.44 69.26 381.76 68.50C382.08 67.74 382.48 66.96 382.63 66.75C382.79 66.54 383.24 65.81 383.63 65.12C389.04 55.60 398.45 49.48 412.38 46.41C418.86 44.99 435.20 45.04 442.50 46.52C460.52 50.16 471.91 60.73 476.12 77.75C477.87 84.82 478.20 88.69 478.30 103.56C478.35 110.91 478.30 112.31 477.99 112.61C477.40 113.20 443.64 113.25 443.06 112.66C442.70 112.30 442.64 111.17 442.58 102.91C442.49 92.02 442.34 90.75 440.69 87.53C438.14 82.53 434.54 80.66 427.38 80.64C419.07 80.61 415.09 83.34 412.59 90.75C412.14 92.07 412.12 94.29 412.12 148.88L412.12 205.62L413.15 208.42C415.38 214.47 419.58 217.07 427.12 217.07C433.99 217.08 438.44 214.78 440.77 210.05C442.28 206.98 442.30 206.78 442.48 195.57C442.61 186.58 442.68 185.21 443.03 184.86C443.44 184.46 476.60 184.27 477.62 184.66C478.33 184.93 478.47 186.62 478.37 194.12C478.19 208.76 477.73 213.96 475.99 220.62C475.39 222.94 473.76 227.53 473.37 228.00C473.20 228.21 472.98 228.63 472.89 228.94C472.31 230.83 468.84 236.01 466.28 238.80C460.72 244.87 451.21 249.61 441.38 251.23C440.55 251.37 439.20 251.60 438.38 251.75C436.46 252.09 423.07 252.27 419.12 252.01ZM624.75 252.01C621.90 251.83 618.54 251.29 616.12 250.63C615.44 250.45 614.42 250.22 613.88 250.13C607.22 249.03 597.90 243.44 592.82 237.51C588.75 232.75 584.52 223.89 583.86 218.75C583.77 217.99 583.58 217.09 583.45 216.75C583.32 216.41 582.97 214.78 582.67 213.12L582.12 210.12L582.12 148.88L582.12 87.62L582.70 84.43C583.01 82.68 583.36 80.99 583.48 80.68C583.59 80.38 583.77 79.51 583.87 78.75C584.10 77.05 584.61 75.46 586.60 70.25C588.97 64.05 594.64 57.04 600.25 53.38C604.10 50.87 609.62 48.35 612.38 47.85C612.92 47.75 613.71 47.53 614.12 47.36C618.14 45.71 632.62 44.85 642.00 45.71C653.26 46.74 662.64 50.49 669.61 56.75C671.59 58.52 675.13 62.69 675.88 64.12C676.10 64.54 676.59 65.39 676.98 66.03C677.80 67.35 679.77 71.78 680.36 73.62C682.44 80.07 683.16 84.18 683.75 93.00C684.16 99.03 683.98 160.87 683.55 161.30C683.29 161.56 676.91 161.65 650.60 161.75C621.97 161.86 617.95 161.92 617.74 162.25C617.41 162.77 617.43 199.09 617.76 203.17C618.54 212.69 623.27 217.08 632.75 217.09C640.94 217.11 645.20 214.14 647.40 206.89C647.99 204.94 648.00 204.75 648.00 195.10C648.00 186.51 648.05 185.24 648.39 184.89C648.74 184.55 650.60 184.49 664.58 184.45C683.67 184.38 682.99 184.36 683.59 185.07C684.61 186.27 683.71 212.45 682.55 215.50C682.42 215.84 682.23 216.74 682.13 217.50C681.80 219.98 679.42 227.35 678.67 228.22C678.48 228.44 678.24 228.95 678.15 229.34C677.44 232.29 672.25 238.82 667.54 242.65C658.63 249.91 643.35 253.25 624.75 252.01ZM740.50 251.99C738.36 251.79 736.74 251.43 732.16 250.14C730.83 249.76 727.42 248.32 726.50 247.75C726.29 247.62 725.51 247.15 724.75 246.71C717.87 242.68 712.46 234.90 709.57 224.88C708.03 219.55 707.17 214.28 706.72 207.40C706.40 202.47 706.59 176.54 706.97 174.00C707.10 173.11 707.43 170.69 707.71 168.62C708.58 162.09 710.72 155.09 713.23 150.53C713.79 149.51 714.25 148.63 714.25 148.58C714.25 148.14 718.78 142.57 720.01 141.49C722.70 139.14 726.65 136.49 728.19 136.00C728.56 135.87 729.66 135.48 730.62 135.12C741.68 130.99 758.67 132.20 768.75 137.83C772.84 140.12 772.75 140.14 772.76 136.69C772.90 109.63 772.70 92.84 772.23 90.87C771.63 88.33 769.88 85.12 768.35 83.78C762.94 79.02 752.02 79.23 747.48 84.19C744.51 87.44 743.88 89.93 743.65 99.33C743.58 102.15 743.49 102.87 743.15 103.21C742.77 103.59 741.25 103.62 725.84 103.62L708.96 103.62L708.48 103.03C708.04 102.49 708.00 101.99 708.01 96.78C708.03 82.68 710.43 72.34 715.57 64.21C720.06 57.12 725.66 52.49 733.65 49.28C740.61 46.48 747.92 45.25 757.50 45.25C780.35 45.26 794.60 52.38 802.78 67.89C803.45 69.16 804.00 70.35 804.00 70.54C804.00 70.73 804.23 71.30 804.50 71.82C804.77 72.33 805.00 72.95 805.00 73.19C805.00 73.43 805.17 73.95 805.38 74.35C806.34 76.19 807.73 83.48 808.18 89.00C808.59 94.03 809.02 245.55 808.63 247.16C808.39 248.17 807.45 248.25 796.90 248.23C782.79 248.21 782.93 248.24 782.26 245.88C782.10 245.33 781.43 243.58 780.76 242.00C780.10 240.42 779.14 238.11 778.62 236.88C776.96 232.89 775.66 230.24 775.39 230.32C775.24 230.37 774.53 231.58 773.80 233.02C770.46 239.61 767.14 243.74 762.54 247.06C761.63 247.72 760.80 248.25 760.69 248.25C760.58 248.25 760.05 248.54 759.52 248.89C758.48 249.58 756.39 250.39 753.00 251.41C750.57 252.14 744.91 252.40 740.50 251.99ZM955.75 251.98C951.07 251.65 944.71 250.30 941.16 248.88C940.30 248.53 939.50 248.25 939.40 248.25C939.03 248.25 935.62 246.67 934.62 246.05C934.08 245.70 933.01 245.08 932.25 244.67C929.20 243.00 923.77 237.78 921.60 234.43C920.06 232.06 917.02 226.05 916.99 225.33C916.99 225.22 916.77 224.68 916.50 224.12C916.23 223.57 916.01 222.93 916.01 222.69C916.00 222.45 915.79 221.60 915.54 220.81C914.45 217.44 913.80 213.61 913.23 207.25C912.96 204.12 912.97 93.00 913.25 90.25C913.98 82.99 914.36 80.88 915.85 75.57C916.31 73.94 917.25 71.33 917.68 70.50C917.85 70.16 918.00 69.71 918.01 69.50C918.01 69.29 918.35 68.56 918.75 67.88C919.15 67.19 919.67 66.29 919.90 65.88C923.34 59.69 930.61 52.88 936.20 50.59C936.71 50.38 937.98 49.82 939.03 49.36C942.45 47.82 949.32 46.19 954.38 45.71C963.22 44.86 979.33 45.73 982.19 47.21C982.43 47.33 983.24 47.57 984.00 47.75C984.76 47.92 986.44 48.45 987.75 48.93C1003.50 54.73 1012.27 67.25 1014.42 87.00C1014.85 90.85 1014.88 94.94 1014.88 149.12L1014.88 207.12L1014.29 211.62C1013.96 214.10 1013.42 217.19 1013.08 218.50C1012.74 219.81 1012.35 221.32 1012.21 221.88C1009.40 233.40 999.98 243.97 988.88 248.08C988.33 248.29 987.09 248.74 986.12 249.10C984.41 249.73 981.25 250.52 977.00 251.38C973.12 252.16 962.68 252.46 955.75 251.98ZM500.40 247.86C499.86 247.33 499.78 50.40 500.31 49.67C500.60 49.27 501.63 49.23 512.46 49.15L524.29 49.06L525.00 49.67C525.40 50.00 525.80 50.52 525.89 50.82C525.98 51.13 526.56 52.56 527.17 54.00C527.78 55.44 528.68 57.58 529.17 58.75C529.66 59.92 530.55 62.01 531.15 63.40C531.76 64.80 532.25 66.05 532.25 66.19C532.25 67.27 533.65 67.04 533.89 65.92C534.14 64.76 536.13 60.65 537.36 58.75C542.02 51.55 550.33 46.81 560.25 45.70C565.10 45.15 574.20 45.26 574.65 45.86C575.21 46.63 575.17 79.54 574.61 80.11C574.26 80.45 572.71 80.50 561.42 80.51C546.88 80.52 545.93 80.60 542.98 82.15C539.77 83.84 538.06 85.97 536.48 90.25L535.88 91.88L535.75 169.68C535.65 233.03 535.56 247.54 535.30 247.80C534.75 248.35 500.94 248.41 500.40 247.86ZM841.00 248.03L840.38 247.85L840.25 164.11C840.15 97.05 840.06 80.26 839.81 79.82L839.49 79.26L827.49 79.19C817.14 79.13 815.45 79.07 815.24 78.75C815.10 78.52 815.01 72.41 815.00 63.45L815.00 48.53L815.56 48.14C816.04 47.80 817.62 47.75 827.78 47.75C838.32 47.75 839.47 47.71 839.78 47.34C840.07 46.99 840.14 43.18 840.19 25.24C840.25 5.69 840.30 3.52 840.66 3.22C841.36 2.64 874.54 2.66 875.48 3.24C875.70 3.37 875.79 9.04 875.83 25.18C875.88 43.00 875.95 47.01 876.22 47.34C876.53 47.71 877.78 47.75 888.36 47.75C897.70 47.75 900.25 47.82 900.60 48.08C901.19 48.50 901.37 78.23 900.79 78.81C900.55 79.05 897.70 79.15 888.48 79.25C878.92 79.35 876.44 79.44 876.28 79.70C875.81 80.47 875.74 90.53 875.75 167.11C875.76 223.98 875.68 247.67 875.49 247.86C875.19 248.16 842.06 248.33 841.00 248.03ZM1038.22 247.84C1037.84 247.38 1037.68 51.33 1038.06 49.97C1038.34 48.98 1038.14 48.99 1050.89 49.17L1062.75 49.33L1063.22 50.13C1063.48 50.58 1063.78 51.21 1063.88 51.53C1064.08 52.20 1064.40 52.97 1065.35 55.05C1065.71 55.83 1066.00 56.55 1066.00 56.64C1066.00 56.88 1067.86 61.22 1069.01 63.66C1069.54 64.77 1070.05 65.98 1070.14 66.34C1070.43 67.50 1071.53 66.89 1071.89 65.38C1071.99 64.96 1072.53 63.67 1073.08 62.50C1077.86 52.44 1086.07 47.05 1098.81 45.62C1103.45 45.10 1110.73 45.17 1111.88 45.75L1112.62 46.13L1112.69 62.73C1112.75 77.29 1112.71 79.40 1112.37 79.92L1111.99 80.50L1099.35 80.50C1084.31 80.50 1084.15 80.52 1080.11 82.40C1077.33 83.70 1074.57 87.78 1074.01 91.43C1073.28 96.14 1073.25 99.36 1073.25 172.58C1073.25 241.90 1073.22 247.46 1072.84 247.78C1072.14 248.36 1038.70 248.42 1038.22 247.84ZM307.80 216.40C310.84 215.65 313.22 214.15 314.88 211.94C315.50 211.12 316.00 210.33 316.00 210.19C316.00 210.05 316.22 209.47 316.48 208.90C317.98 205.71 317.88 210.45 317.88 148.62L317.88 92.38L317.31 90.62C315.29 84.44 312.74 82.13 306.39 80.74C301.54 79.68 296.04 80.62 292.90 83.05C292.23 83.57 291.59 84.00 291.49 84.00C290.57 84.00 288.15 89.46 287.71 92.50C287.19 96.12 287.11 199.65 287.63 203.68C288.37 209.45 289.86 212.21 293.76 215.05C296.34 216.93 303.06 217.57 307.80 216.40ZM762.05 216.65C762.64 216.45 763.49 216.22 763.94 216.13C767.56 215.38 771.16 211.09 772.27 206.21C772.81 203.78 773.00 181.48 772.49 179.75C772.35 179.27 772.13 178.36 772.01 177.74C771.25 173.91 767.84 170.29 763.50 168.73C760.90 167.79 753.89 167.85 751.32 168.84C745.37 171.13 742.88 175.10 742.22 183.31C741.83 188.25 742.08 202.99 742.60 205.38C743.85 211.12 747.09 215.20 751.12 216.09C751.54 216.18 752.44 216.41 753.12 216.61C754.83 217.10 760.62 217.12 762.05 216.65ZM969.06 216.52C973.94 215.27 976.83 212.37 978.53 207.00L979.12 205.12L979.12 148.75L979.12 92.38L978.53 90.38C976.85 84.67 973.57 81.79 967.43 80.63C959.22 79.07 951.92 82.68 949.78 89.36C948.51 93.32 948.51 93.24 948.51 148.75C948.50 191.87 948.56 200.87 948.86 203.40C949.57 209.37 951.14 212.29 955.12 214.97C957.95 216.88 964.71 217.63 969.06 216.52ZM68.57 129.77C68.91 129.64 69.26 129.33 69.36 129.08C69.64 128.38 69.53 94.21 69.24 92.69C67.88 85.43 64.23 81.68 57.62 80.75C49.81 79.66 43.98 81.87 41.16 87.01C38.94 91.05 38.75 93.07 38.75 112.93C38.75 129.17 38.76 129.32 39.83 129.75C40.57 130.04 67.80 130.06 68.57 129.77ZM647.76 129.50C647.91 129.27 647.98 122.11 647.94 110.38L647.87 91.62L647.31 90.12C644.82 83.55 640.98 80.78 634.12 80.60C626.19 80.39 622.14 82.33 619.55 87.54C617.61 91.47 617.51 92.62 617.50 112.58C617.50 128.56 617.53 129.26 618.35 129.81C618.94 130.21 647.50 129.91 647.76 129.50Z"/></g></svg></div>
+  <script>
+    (function () {
+      var b = document.getElementById('boot'), visto = false;
+      if (window.top !== window) return b.remove();
+      try { visto = sessionStorage.getItem('boot') === '1'; sessionStorage.setItem('boot', '1'); } catch (e) {}
+      if (visto) return b.remove();
+      var fim = function () { if (!b.isConnected || b.classList.contains('sai')) return; b.classList.add('sai'); setTimeout(function () { b.remove(); }, 450); };
+      b.addEventListener('click', fim);
+      setTimeout(fim, matchMedia('(prefers-reduced-motion: reduce)').matches ? 700 : 2100);
+    })();
+  </script>
+  <!-- Página inicial: o app da criança não tem configurações (quem configura é o técnico e o professor) -->
+  <section id="home" class="screen active">
+    <header class="brandbar">
+      <img class="brand-logo" src="brand/logo-horizontal.png" alt="ecocreator">
+      <span class="spacer"></span>
+      <button id="btn-install" class="small hidden">📲 Instalar app</button>
+    </header>
+
+    <div class="hero">
+      <img class="hero-img eco" src="brand/eco.svg" alt="Eco, o mascote">
+      <div class="hero-text">
+        <h1 data-brand="product"></h1>
+        <p data-brand="tagline" class="tagline"></p>
+        <button id="btn-ble" class="big primary">🔵 Conectar o Eco</button>
+        <p id="home-msg" class="msg" role="status"></p>
+      </div>
+    </div>
+
+    <section id="instalar" class="block-section instalar hidden">
+      <img src="icons/icon-192.png" alt="">
+      <div><b>Instale o Eco neste aparelho</b><br><span class="muted">Abre em tela cheia, direto da tela inicial, e funciona sem internet.</span></div>
+      <button id="instalar-sim" class="primary">📲 Instalar</button>
+      <button id="instalar-nao" class="small">Agora não</button>
+    </section>
+
+    <section class="block-section class-box">
+      <div>
+        <h2>🏫 Sala de aula</h2>
+        <p id="class-status" class="muted"></p>
+      </div>
+      <button id="btn-class" class="small" data-recurso="salaWifi">🏫 Entrar na sala</button>
+    </section>
+
+    <section class="block-section">
+      <h2>Como usar</h2>
+      <ol class="steps">
+        <li><span>🔋</span><div><b>Ligue o Eco</b><br>Conecte a powerbank na placa. As luzes piscam quando ele está pronto.</div></li>
+        <li><span>📡</span><div><b>Conecte</b><br>Toque em <i>Conectar o Eco</i> e escolha o seu (o número e a cor estão na placa).</div></li>
+        <li><span>🧩</span><div><b>Conte o que montou</b><br>Carrinho, casinha, elevador, piano… O app muda para o que você montou.</div></li>
+        <li><span>🎮</span><div><b>Divirta-se!</b><br>Pilote, programe, ligue as luzes e os motores, como o professor combinou.</div></li>
+      </ol>
+    </section>
+
+    <section class="block-section">
+      <h2>Precisa de ajuda?</h2>
+      <details class="faq"><summary>O Eco não aparece na lista</summary>
+        <p>Confira se o Bluetooth do celular está ligado e se o Eco está com a powerbank ligada (as luzes piscam ao ligar).
+        Chegue mais perto. Se outro celular estiver conectado nele, ele não aparece até ser desconectado.</p></details>
+      <details class="faq"><summary>Pediu permissão de Bluetooth ou localização</summary>
+        <p>Toque em <i>Permitir</i>: o Android usa essa permissão para achar o Eco. O app não guarda onde você está.</p></details>
+      <details class="faq"><summary>Funciona no iPhone?</summary>
+        <p>O Safari não tem Bluetooth para sites. No iPhone, use o navegador gratuito <b>Bluefy</b> e abra este mesmo endereço nele.</p></details>
+    </section>
+
+    <details id="emu-box" class="block-section dev hidden">
+      <summary>🛠️ Emulador no PC (desenvolvimento)</summary>
+      <label class="field">Endereço<input id="emu-url" spellcheck="false" autocomplete="off"></label>
+      <button id="btn-emu" class="big">🖥️ Conectar no emulador</button>
+    </details>
+
+    <footer class="footer">
+      <span>© <span id="year"></span> <span data-brand="company"></span></span>
+      <span id="brand-contact"></span>
+      <span class="muted">app <span id="app-version"></span></span>
+    </footer>
+  </section>
+
+  <!-- Tela de pilotagem -->
+  <section id="drive" class="screen">
+    <header class="topbar">
+      <button id="car-id" class="car-id" title="Toque para o Eco piscar">
+        <span id="conn-dot" class="dot"></span>
+        <span id="signal" class="signal s0" aria-label="Sinal"><i></i><i></i><i></i><i></i></span>
+        <span id="car-color" class="swatch"></span>
+        <span id="car-name">Eco</span>
+      </button>
+      <button id="class-chip" class="class-chip hidden"></button>
+      <div id="dist" class="pill">📏 — cm</div>
+      <!-- só aparecem os modos que a aula libera (com um só, a barra some) -->
+      <div id="modes" class="modes" role="group" aria-label="Modo de controle">
+        <button data-mode="tank">🎚️<span> Tanque</span></button>
+        <button data-mode="wheel">🛞<span> Volante</span></button>
+        <button data-mode="tilt">📱<span> Inclinar</span></button>
+        <button data-mode="program" data-recurso="programacao">🧩<span> Programar</span></button>
+        <button data-mode="line" data-recurso="seguidor" data-cap="line">🛤️<span> Seguidor</span></button>
+      </div>
+      <button id="btn-cena" class="icon hidden" aria-label="O que você montou?" title="O que você montou?">🧩</button>
+      <button id="btn-exit" class="icon hold" aria-label="Sair do Eco (segure)">⏏</button>
+    </header>
+    <!-- laboratório, explorador, bichinho, desenhista: um painel, que pilotando vai para a coluna do meio (cenario-ui.js) -->
+    <div id="cena-extra" class="cena-extra hidden"></div>
+
+    <main id="cockpit" class="cockpit" data-mode="tank">
+      <div class="zone zone-a">
+        <div id="lever-l" class="lever"><span class="arrow up">▲</span><span class="arrow down">▼</span><div class="knob"></div></div>
+        <div id="wheel" class="wheel"></div>
+        <div id="tilt" class="tilt">
+          <div id="tilt-wheel" class="wheel passive"></div>
+          <button id="btn-calibrate" class="small">🎯 Calibrar</button>
+          <p id="tilt-msg" class="msg"></p>
+        </div>
+      </div>
+
+      <div class="center">
+        <div class="lights">
+          <button id="btn-left" class="lb" data-light="left" data-feature="lights" data-cap="signals">⬅️<small>Seta</small></button>
+          <button id="btn-head" class="lb" data-light="headlight" data-feature="lights" data-cap="leds">💡<small>Farol</small></button>
+          <button id="btn-hazard" class="lb" data-light="hazard" data-feature="lights" data-cap="leds">⚠️<small>Alerta</small></button>
+          <button id="btn-right" class="lb" data-light="right" data-feature="lights" data-cap="signals">➡️<small>Seta</small></button>
+          <button id="btn-police" class="lb" data-light="police" data-feature="lights" data-cap="signals">🚨<small>Polícia</small></button>
+          <button id="btn-horn" class="lb horn" data-feature="horn">📯<small>Buzina</small></button>
+          <button id="btn-music" class="lb" data-feature="music">🎵<small>Música</small></button>
+        </div>
+        <div class="gauge" aria-hidden="true">
+          <svg viewBox="0 0 120 68">
+            <path d="M12 62 A48 48 0 0 1 108 62" class="g-track" pathLength="100"/>
+            <g class="g-zonas">
+              <path d="M12 62 A48 48 0 0 1 108 62" class="g-z branca" pathLength="100"/>
+              <path d="M12 62 A48 48 0 0 1 108 62" class="g-z amarela" pathLength="100"/>
+              <path d="M12 62 A48 48 0 0 1 108 62" class="g-z vermelha" pathLength="100"/>
+              <g class="g-tracos"><line x1="26.0" y1="62.0" x2="19.0" y2="62.0"/><line x1="24.8" y1="50.6" x2="21.0" y2="49.3"/><line x1="32.5" y1="42.0" x2="26.8" y2="37.9"/><line x1="38.3" y1="32.1" x2="35.9" y2="28.8"/><line x1="49.5" y1="29.7" x2="47.3" y2="23.0"/><line x1="60.0" y1="25.0" x2="60.0" y2="21.0"/><line x1="70.5" y1="29.7" x2="72.7" y2="23.0"/><line x1="81.7" y1="32.1" x2="84.1" y2="28.8"/><line x1="87.5" y1="42.0" x2="93.2" y2="37.9"/><line x1="95.2" y1="50.6" x2="99.0" y2="49.3"/><line x1="94.0" y1="62.0" x2="101.0" y2="62.0"/></g>
+              <g class="g-nums"><text x="34.0" y="64.5">0</text><text x="39.0" y="49.2">2</text><text x="52.0" y="39.8">4</text><text x="68.0" y="39.8">6</text><text x="81.0" y="49.2">8</text><text x="86.0" y="64.5">10</text></g>
+            </g>
+            <path id="g-fill" d="M12 62 A48 48 0 0 1 108 62" class="g-fill" pathLength="100"/>
+            <line id="g-needle" x1="60" y1="62" x2="60" y2="22" class="g-needle"/>
+            <circle cx="60" cy="62" r="5" class="g-hub"/>
+          </svg>
+          <span id="g-label"></span>
+        </div>
+        <div id="music-menu" class="menu hidden">
+          <label class="check small-check"><input type="checkbox" id="dance"> 💃 Dança de luzes</label>
+        </div>
+      </div>
+
+      <div class="zone zone-b">
+        <div id="lever-r" class="lever"><span class="arrow up">▲</span><span class="arrow down">▼</span><div class="knob"></div></div>
+        <div class="car-controls">
+          <div id="pedal" class="pedal" aria-label="Arraste para cima para ir à frente e para baixo para dar ré"><div class="fill"></div><span class="p-cima">▲<br>Frente</span><span class="p-baixo">Ré<br>▼</span></div>
+        </div>
+      </div>
+
+      <!-- Modo programação -->
+      <div id="program" class="program">
+        <div class="palette-wrap">
+          <div class="pal-tabs" role="tablist"></div>
+          <div class="palette"></div>
+        </div>
+        <div class="prog-main">
+          <div id="mission-bar" class="mission-bar hidden">
+            <div class="mb-text"><b class="mb-title"></b> <span class="mb-stars"></span><small class="mb-goal"></small><small class="mb-hint"></small></div>
+            <button class="mb-check small">✔ Conferir</button>
+            <button class="mb-close small" aria-label="Sair da missão">✕</button>
+          </div>
+          <div class="track"></div>
+          <div class="prog-bar">
+            <button data-act="run" class="run">▶ Executar</button>
+            <button id="btn-prog-auto" class="hidden" title="Grava no Eco: roda sozinho, mesmo sem o celular, e liga junto com o Eco">⚙️ Gravar</button>
+            <button id="btn-volta-cena" class="hidden" title="Voltar para a tela do cenário">⬅ 🧩</button>
+            <button data-act="files" title="Meus programas">📂</button>
+            <button data-act="missions" title="Missões" data-feature="missions">🎯</button>
+            <button data-act="clear" title="Apagar todos os blocos">🗑</button>
+            <span class="prog-info muted"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modo seguidor de linha: o Eco segue a fita sozinho; a criança ajusta os sensores -->
+      <div id="line" class="line-panel">
+        <div class="ln-sensors" aria-label="Sensores de luz">
+          <div class="ln-sensor"><span id="ln-see-l" class="ln-see"></span><div class="ln-bar"><i id="ln-l"></i></div><small>Esquerdo</small></div>
+          <div class="ln-sensor"><span id="ln-see-r" class="ln-see"></span><div class="ln-bar"><i id="ln-r"></i></div><small>Direito</small></div>
+        </div>
+        <div class="ln-main">
+          <p id="ln-race" class="ln-race hidden"></p>
+          <p id="ln-status" class="ln-status">Coloque o Eco com a fita entre os dois sensores e toque em Andar.</p>
+          <div id="ln-time" class="ln-time">0,00 s</div>
+          <button id="ln-go" class="ln-go">▶ Andar</button>
+          <p id="ln-laps" class="ln-best"></p>
+          <p id="ln-best" class="ln-best"></p>
+        </div>
+        <details class="ln-help">
+          <summary>💡 Como ajustar os sensores</summary>
+          <p>As barrinhas mostram a luz que cada sensor recebe. Em cima da fita a barrinha sobe; fora dela, desce.
+            Quanto maior a diferença, melhor. Ajuste a <b>altura</b>, a <b>inclinação do LED</b> e a <b>distância
+            entre os sensores</b> (a fita tem que caber entre eles).</p>
+          <p>Ao tocar em Andar, o Eco dá uma reboladinha para aprender o claro e o escuro, apita e sai.</p>
+        </details>
+      </div>
+
+      <div id="banner" class="banner hidden"></div>
+      <div id="pause-overlay" class="overlay pause hidden">
+        <span id="pause-icon">⏸️</span>
+        <p id="pause-title">Pausa!</p>
+        <small id="pause-text">O professor pediu para parar os Ecos.</small>
+      </div>
+      <div id="overlay" class="overlay hidden">
+        <div class="spinner"></div>
+        <p id="overlay-text">Reconectando…</p>
+        <button id="btn-home" class="small">Voltar ao início</button>
+      </div>
+    </main>
+    <div id="toast" class="toast hidden"></div>
+  </section>
+
+  <!-- Programas salvos -->
+  <dialog id="prog-files">
+    <form method="dialog">
+      <h2>📂 Meus programas</h2>
+      <div class="pf-save"><input id="pf-name" maxlength="30" placeholder="Nome do programa" autocomplete="off">
+        <button type="button" id="pf-save" class="primary">💾 Salvar</button></div>
+      <ul id="pf-list" class="pick-list"></ul>
+      <div class="actions"><span class="spacer"></span><button value="close">Fechar</button></div>
+    </form>
+  </dialog>
+
+  <!-- Missões -->
+  <dialog id="missions">
+    <form method="dialog">
+      <h2>🎯 Missões</h2>
+      <p class="hint">Escolha uma missão, monte o programa e rode no Eco para ganhar as estrelas.</p>
+      <ul id="ms-list" class="pick-list missions-list"></ul>
+      <div class="actions"><span class="spacer"></span><button value="close">Fechar</button></div>
+    </form>
+  </dialog>
+
+  <!-- Lista de Ecos do emulador (no Bluetooth real quem mostra é o próprio Chrome) -->
+  <!-- Cenário maquete (casinha, cidade, girassol…): cada porta comandada (cenario-ui.js; documentos/cenarios.md) -->
+  <section id="cena" class="screen cena">
+    <header class="topbar">
+      <span id="cena-titulo" class="cena-titulo"></span>
+      <span class="spacer"></span>
+      <button id="cena-prog" class="cena-prog" title="Programar o cenário com blocos">🧩 Programar</button>
+      <button id="cena-trocar" class="icon" aria-label="O que você montou?" title="O que você montou?">🔁</button>
+      <button id="cena-sair" class="icon hold" aria-label="Sair (segure)">⏏</button>
+    </header>
+    <main class="cena-main">
+      <div id="cena-arte" class="cena-arte"></div>
+      <div class="cena-lado">
+        <div id="cena-controles" class="cena-controles"></div>
+        <div id="cena-sensores" class="cena-sensores"></div>
+        <div id="cena-auto" class="cena-auto"></div>
+      </div>
+    </main>
+  </section>
+
+  <dialog id="cena-pick" class="cena-pick">
+    <h2 id="cena-pick-titulo">O que você montou?</h2>
+    <p id="cena-pick-msg" class="muted"></p>
+    <div id="cena-lista" class="cena-lista"></div>
+    <div class="actions"><span class="spacer"></span><button id="cena-pick-fechar">Fechar</button></div>
+  </dialog>
+
+  <dialog id="picker">
+    <h2>Escolha o seu Eco</h2>
+    <p class="muted">Kits livres por perto (o número e a cor estão na placa)</p>
+    <div id="picker-list" class="picker-list"></div>
+    <p id="picker-empty" class="msg">Procurando Ecos…</p>
+    <div class="actions"><span class="spacer"></span><button id="picker-cancel">Cancelar</button></div>
+  </dialog>
+
+  <!-- Entrar na sala de aula (quando não veio pelo QR) -->
+  <dialog id="class-dialog">
+    <form method="dialog">
+      <h2>🏫 Entrar na sala</h2>
+      <label class="field">Código da sala (o professor mostra)<input id="c-code" inputmode="numeric" maxlength="4" autocomplete="off"></label>
+      <details class="faq-lite"><summary>Avançado</summary>
+        <label class="field">Endereço da sala<input id="c-url" spellcheck="false" autocomplete="off"></label>
+      </details>
+      <div class="actions">
+        <button value="cancel">Cancelar</button>
+        <span class="spacer"></span>
+        <button value="join" class="primary">Entrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Quem é você? (lista da turma, ou o nome digitado numa aula sem lista) -->
+  <dialog id="roster" class="roster">
+    <h2>👋 Quem é você?</h2>
+    <p id="ro-class" class="muted"></p>
+    <button id="ro-suggest" class="big primary hidden"></button>
+    <div id="ro-list" class="ro-list"></div>
+    <form id="ro-free" class="ro-free hidden">
+      <input id="ro-name" maxlength="24" placeholder="Seu nome" autocomplete="off" required>
+      <button class="primary">Entrar</button>
+    </form>
+    <div class="actions"><span class="spacer"></span><button id="ro-cancel" type="button">Agora não</button></div>
+  </dialog>
+
+  <!-- Mensagem do professor -->
+  <div id="teacher-msg" class="teacher-msg hidden"><p></p><small>toque para fechar</small></div>
+  <div id="confira" class="confira hidden" role="status"><b>🔌 Confira as peças</b><ul></ul><button type="button">OK</button></div>
+
+  <div id="rotate"><span>📱</span><p>Gire o celular para o lado</p></div>
+
+  <script type="module" src="js/sair-da-pagina.js"></script>
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/ajustes.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+Fontes guardadas aqui (funcionam sem internet). Todas com a SIL Open Font License 1.1 (uso comercial permitido,
+inclusive embutidas em programas; não vender a fonte sozinha): https://openfontlicense.org
+
+raleway-latin.woff2  Raleway   (The Raleway Project Authors)      fonte da marca ecocreator
+inter-latin.woff2    Inter     (The Inter Project Authors)        pacotes Minimalista e Moderno
+nunito-latin.woff2   Nunito    (The Nunito Project Authors)       pacotes Oceano e Floresta
+fredoka-latin.woff2  Fredoka   (The Fredoka Project Authors)      pacote Alegre
+lora-latin.woff2     Lora      (The Lora Project Authors)         pacote Clássico
+
+Baixadas do Google Fonts (subconjunto "latin", com acentos do português).

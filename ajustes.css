@@ -1,0 +1,9 @@
+/* gerado pelo Estúdio de interface (lançador). Não edite à mão: use o Estúdio. */
+#btn-left, #btn-right { display: none !important; }
+#btn-head { display: none !important; }
+#btn-hazard { display: none !important; }
+#btn-police { display: none !important; }
+#btn-horn { display: none !important; }
+#btn-music { display: none !important; }
+#modes button[data-mode="tank"] { display: none !important; }
+#modes button[data-mode="line"] { display: none !important; }

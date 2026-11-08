@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0e1218">
+<title>Atualizar o Eco</title>
+<link rel="icon" href="icons/favicon.png">
+<style>
+@font-face { font-family: 'Raleway'; font-weight: 400 800; src: url('fonts/raleway-latin.woff2') format('woff2'); }
+:root { --bg: #0e1218; --panel: #18202a; --line: #2a3442; --text: #eef2f7; --muted: #8b97a8; --accent: #1a8e5d; --green: #35d07f; --red: #ff4d4d; --amber: #ffb020; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.45 'Raleway', system-ui, sans-serif; }
+main { max-width: 560px; margin: 0 auto; padding: 16px 16px 40px; }
+header img { height: 30px; display: block; margin: 4px 0 14px; }
+h1 { font-size: 24px; margin: 0 0 4px; }
+.sub { color: var(--muted); margin: 0 0 16px; }
+.passo { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+.passo h2 { font-size: 17px; margin: 0 0 8px; display: flex; gap: 10px; align-items: center; }
+.passo h2 .n { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); font-size: 15px; flex: none; }
+.passo.feito h2 .n { background: var(--green); color: #0e1218; }
+.passo.bloq { opacity: .45; pointer-events: none; }
+.passo p { margin: 0 0 10px; }
+button { font: inherit; font-weight: 700; color: var(--text); background: #243041; border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; min-height: 48px; cursor: pointer; }
+button.primario { background: var(--accent); border-color: var(--accent); width: 100%; }
+button:disabled { opacity: .5; }
+.opcoes { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; }
+.opcoes button { flex: 1 1 0; }
+.opcoes button.on { background: var(--accent); border-color: var(--green); }
+.barra { height: 12px; background: #243041; border-radius: 6px; overflow: hidden; margin: 10px 0 6px; }
+.barra i { display: block; height: 100%; width: 0; background: var(--green); transition: width .2s; }
+.msg { color: var(--muted); min-height: 1.4em; margin: 6px 0 0; }
+.msg.erro { color: var(--red); }
+.msg.ok { color: var(--green); }
+.eco { color: var(--muted); font-size: 14px; }
+.dica { background: #1d2a22; border-left: 4px solid var(--accent); border-radius: 8px; padding: 10px 12px; font-size: 15px; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <header><img src="brand/logo-horizontal.png" alt="ecocreator"></header>
+  <h1>Atualizar o Eco do protótipo</h1>
+  <p class="sub">Força total nos motores e no giro, e as rodas girando para o lado certo. Leva uns 5 minutos.</p>
+
+  <section id="p1" class="passo">
+    <h2><span class="n">1</span>Conectar</h2>
+    <p>Ligue o Eco na powerbank e deixe ele perto do celular. Feche o app Ecocreator se ele estiver conectado no Eco.</p>
+    <button id="conectar" class="primario">🔵 Conectar o Eco</button>
+    <p id="m1" class="msg"></p>
+  </section>
+
+  <section id="p2" class="passo bloq">
+    <h2><span class="n">2</span>Atualizar</h2>
+    <p>Mantenha o celular perto do Eco até terminar. Se cair no meio, nada se perde: o Eco continua com o que tinha.</p>
+    <button id="atualizar" class="primario">⬆️ Atualizar</button>
+    <div class="barra"><i id="b2"></i></div>
+    <p id="m2" class="msg"></p>
+  </section>
+
+  <section id="p3" class="passo bloq">
+    <h2><span class="n">3</span>Teste das rodas</h2>
+    <p class="dica">Segure o Eco no ar, com as rodas sem tocar em nada e a frente virada para um lugar livre. Olhe o Eco de cima, com a frente para longe de você.</p>
+    <div id="t1">
+      <p><b>Roda 1:</b> toque e veja qual roda gira.</p>
+      <button id="girar1">▶ Girar a roda 1</button>
+      <div class="opcoes" data-teste="1" data-q="roda"><button data-v="e">Esquerda</button><button data-v="d">Direita</button><button data-v="">Nenhuma</button></div>
+      <div class="opcoes" data-teste="1" data-q="frente"><button data-v="1">Para a frente</button><button data-v="0">Para trás</button></div>
+    </div>
+    <div id="t2" class="hidden">
+      <p><b>Roda 2:</b> agora a outra.</p>
+      <button id="girar2">▶ Girar a roda 2</button>
+      <div class="opcoes" data-teste="2" data-q="roda"><button data-v="e">Esquerda</button><button data-v="d">Direita</button><button data-v="">Nenhuma</button></div>
+      <div class="opcoes" data-teste="2" data-q="frente"><button data-v="1">Para a frente</button><button data-v="0">Para trás</button></div>
+    </div>
+    <p id="m3" class="msg"></p>
+  </section>
+
+  <section id="p4" class="passo bloq">
+    <h2><span class="n">4</span>Acertar as rodas</h2>
+    <p id="t4">O Eco recebe a versão certa para o jeito que os motores foram ligados.</p>
+    <button id="acertar" class="primario">🔧 Acertar as rodas</button>
+    <div class="barra"><i id="b4"></i></div>
+    <div id="conferir" class="hidden">
+      <p>Segure o Eco no ar de novo.</p>
+      <button id="frente">▶ Girar as duas para a frente</button>
+      <div class="opcoes" data-q="conferir"><button data-v="1">As duas foram para a frente</button><button data-v="0">Não</button></div>
+    </div>
+    <p id="m4" class="msg"></p>
+  </section>
+
+  <p id="eco" class="eco"></p>
+</main>
+<script type="module" src="js/atualizar.js"></script>
+</body>
+</html>

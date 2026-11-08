@@ -1,0 +1,54 @@
+{
+ "versao": "0.9",
+ "gerado": "2026-11-08T13:15:52.614Z",
+ "variantes": [
+  {
+   "arquivo": "prototipo.bin",
+   "troca": false,
+   "invE": false,
+   "invD": false
+  },
+  {
+   "arquivo": "prototipo-d.bin",
+   "troca": false,
+   "invE": false,
+   "invD": true
+  },
+  {
+   "arquivo": "prototipo-e.bin",
+   "troca": false,
+   "invE": true,
+   "invD": false
+  },
+  {
+   "arquivo": "prototipo-ed.bin",
+   "troca": false,
+   "invE": true,
+   "invD": true
+  },
+  {
+   "arquivo": "prototipo-t.bin",
+   "troca": true,
+   "invE": false,
+   "invD": false
+  },
+  {
+   "arquivo": "prototipo-td.bin",
+   "troca": true,
+   "invE": false,
+   "invD": true
+  },
+  {
+   "arquivo": "prototipo-te.bin",
+   "troca": true,
+   "invE": true,
+   "invD": false
+  },
+  {
+   "arquivo": "prototipo-ted.bin",
+   "troca": true,
+   "invE": true,
+   "invD": true
+  }
+ ]
+}

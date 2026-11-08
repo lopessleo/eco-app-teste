@@ -1,0 +1,32 @@
+{
+ "versao": 1,
+ "tema": {},
+ "elementos": {
+  "#btn-left, #btn-right": {
+   "oculto": true
+  },
+  "#btn-head": {
+   "oculto": true
+  },
+  "#btn-hazard": {
+   "oculto": true
+  },
+  "#btn-police": {
+   "oculto": true
+  },
+  "#btn-horn": {
+   "oculto": true
+  },
+  "#btn-music": {
+   "oculto": true
+  },
+  "#modes button[data-mode=\"tank\"]": {
+   "oculto": true
+  },
+  "#modes button[data-mode=\"line\"]": {
+   "oculto": true
+  }
+ },
+ "adicionados": [],
+ "pacote": "ecocreator"
+}

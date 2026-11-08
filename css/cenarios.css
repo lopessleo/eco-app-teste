@@ -1,0 +1,92 @@
+/* Cenários (cenario-ui.js): escolha com ilustrações grandes, tela das maquetes e o painel dos que andam */
+
+.cena-pick { width: min(96vw, 980px); padding: 16px 18px; overflow: hidden; }
+/* só a lista rola (antes rolavam a janela e a lista: duas barras) */
+.cena-pick[open] { display: flex; flex-direction: column; }
+.cena-pick h2 { margin: 0 0 4px; }
+.cena-pick .actions { padding-top: 10px; }
+.cena-lista { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px;
+  overflow: hidden auto; overscroll-behavior: contain; padding: 4px; scrollbar-width: thin; }
+.cena-cartao { min-width: 0; overflow-wrap: anywhere; display: flex; flex-direction: column; align-items: stretch; gap: 6px; padding: 10px; border-radius: 16px; text-align: left; background: var(--panel-2); border: 2px solid transparent; }
+.cena-cartao svg { width: 100%; height: auto; border-radius: 12px; }
+.cena-cartao b { font-size: 17px; }
+.cena-cartao small { color: var(--muted); font-size: 13px; line-height: 1.3; }
+.cena-cartao.atual { border-color: var(--accent-light); }
+.cena-cartao:disabled { opacity: .35; }
+
+.cena { flex-direction: column; }
+.cena-titulo { font-size: 20px; font-weight: 800; }
+.cena-main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 14px; padding: 10px 14px 14px; overflow: auto; }
+.cena-arte svg { width: 100%; height: auto; border-radius: 18px; }
+.cena-lado { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.cena-controles { display: flex; flex-direction: column; gap: 10px; }
+.cena-motor { display: grid; grid-template-columns: minmax(0, 1fr) 72px 72px; gap: 8px; align-items: center; }
+.cena-motor span { font-weight: 700; overflow-wrap: anywhere; }
+.cena-btn { height: 56px; font-size: 24px; border-radius: 14px; touch-action: none; }
+.cena-btn.on { background: var(--accent); color: #fff; }
+.cena-luzes { display: flex; flex-wrap: wrap; gap: 8px; }
+.cena-luz { display: flex; align-items: center; gap: 8px; min-height: 52px; padding: 8px 14px; border-radius: 14px; font-weight: 700; touch-action: none; }
+.cena-luz i { width: 18px; height: 18px; border-radius: 50%; background: #333; border: 2px solid var(--cor, #fff); }
+.cena-luz.on i { background: var(--cor, #fff); box-shadow: 0 0 12px var(--cor, #fff); }
+.cena-som.on { background: var(--amber); color: #000; }
+.cena-sensores { display: grid; gap: 6px; }
+.cena-sensor { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: center; font-size: 14px; }
+.cena-sensor .barra { height: 12px; border-radius: 6px; background: var(--panel-2); overflow: hidden; }
+.cena-sensor .barra i { display: block; height: 100%; background: var(--amber); }
+.cena-auto { display: flex; flex-wrap: wrap; gap: 8px; }
+.cena-auto h3 { width: 100%; margin: 4px 0 0; font-size: 15px; }
+.cena-auto-btn { min-height: 48px; padding: 8px 14px; border-radius: 14px; font-weight: 700; }
+.cena-auto-btn.on { background: var(--accent); color: #fff; }
+.cena-auto-btn.parar { background: var(--panel-2); }
+
+#drive { position: relative; }
+.cena-extra { position: absolute; top: 60px; right: 12px; z-index: 5; width: min(46vw, 320px); padding: 10px; border-radius: 14px; background: rgba(14, 18, 24, .88); border: 1px solid var(--line); font-size: 13px; }
+.cena-extra svg { width: 100%; height: auto; display: block; margin-top: 6px; background: var(--panel); border-radius: 8px; }
+.cena-extra .cara { font-size: 64px; text-align: center; line-height: 1.1; }
+.cena-extra small { display: block; text-align: center; color: var(--muted); }
+/* pilotando: na coluna do meio, sem cobrir o volante nem o acelerador (cenario-ui.js) */
+.center:has(> .cena-extra:not(.hidden)) { min-height: 0; }
+.center:has(> .cena-extra:not(.hidden)) .gauge { display: none; }
+.center > .cena-extra { position: static; flex: 0 1 auto; align-self: center; width: min(100%, 320px); min-height: 0; overflow-y: auto; }
+.center > .cena-extra svg { max-height: 40dvh; }
+.center:has(> .lights.hidden) > .cena-extra svg { max-height: 62dvh; }
+
+@media (max-width: 720px), (orientation: portrait) {
+  .cena-main { grid-template-columns: minmax(0, 1fr); }
+  .cena-arte { max-width: 420px; }
+}
+
+/* módulos e extras */
+.cena-modulos { display: flex; flex-direction: column; gap: 8px; }
+.cena-modulos h3 { margin: 4px 0 0; font-size: 15px; }
+.cena-servo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) 48px; gap: 8px; align-items: center; }
+.cena-piano { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; }
+.cena-piano button { height: 96px; border-radius: 0 0 10px 10px; background: #f4f4f4; color: #111; font-weight: 800; align-items: flex-end; touch-action: none; }
+.cena-piano button.on { background: var(--amber); }
+.cena-tela { display: flex; gap: 6px; flex-wrap: wrap; }
+.cena-tela input { flex: 1; min-width: 0; }
+.cena-graf { width: 100%; height: 64px; background: var(--panel); border-radius: 8px; }
+.cena-cor { display: inline-block; width: 14px; height: 14px; border-radius: 50%; vertical-align: middle; border: 1px solid #fff4; }
+.cena-extra .row { display: flex; gap: 6px; margin: 6px 0; }
+.cena-extra .cena-auto-btn { width: 100%; margin-top: 6px; }
+.cena-prog { min-height: 44px; padding: 6px 14px; border-radius: 12px; font-weight: 700; background: var(--accent); color: #fff; }
+#btn-prog-auto, #btn-volta-cena { white-space: nowrap; }
+
+/* barra de cima com muitos modos e o 🧩 dos cenários: os modos encolhem (só os ícones) em vez de empurrar a tela */
+.topbar { min-width: 0; }
+.topbar .modes { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+@media (max-width: 1100px) { body:has(#btn-cena:not(.hidden)) .modes button span { display: none; } }
+#program.maquete [data-act="missions"], #program.maquete #mission-bar { display: none !important; }
+.prog-bar { min-width: 0; }
+#program .prog-info { min-width: 0; flex: 1 1 0; overflow: hidden; }
+.cena-lista:focus { outline: none; }
+/* celular deitado (pouca altura): os cartões correm para o lado, inteiros */
+@media (max-height: 520px) {
+  .cena-pick { max-height: calc(100dvh - 16px); padding: 10px 14px; }
+  .cena-pick h2 { font-size: 19px; }
+  #cena-pick-msg { display: none; }
+  .cena-lista { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(170px, 24vw); overflow: auto hidden; }
+  .cena-cartao { justify-content: center; }
+  .cena-cartao svg { width: 100%; height: auto; max-height: calc(100dvh - 170px); }
+  .cena-cartao small { display: none; }
+}
