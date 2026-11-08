@@ -33,10 +33,11 @@
 
 /* a plantinha: o caule cresce com --p, as folhas e a flor aparecem quando passam da vez delas */
 .at-cresce { transition: y .5s linear, height .5s linear; }
-.at-folha, .at-flor { transform-box: fill-box; transform-origin: 0 50%; opacity: 0; transition: opacity .4s; }
-.at-folha.on, .at-flor.on { opacity: 1; animation: at-brota .6s ease-out; }
-@keyframes at-brota { from { scale: .2; } }
-.at-flor { transform-origin: 50% 70%; }
+/* a folha nasce da base, que encosta no caule (o ponto 0 0 dela); a flor, da ponta do caule */
+.at-folha { transform-box: view-box; transform-origin: 0 0; transform: scale(0); transition: transform .7s cubic-bezier(.3, 1.4, .5, 1); }
+.at-folha.on { transform: scale(1); }
+.at-flor { transform-box: view-box; transform-origin: 130px 92px; transform: scale(0); transition: transform .6s cubic-bezier(.3, 1.4, .5, 1); }
+.at-flor.on { transform: scale(1); }
 .at-flor .at-petalas { transform-box: fill-box; transform-origin: 50% 50%; scale: .35; transition: scale .8s cubic-bezier(.3, 1.6, .5, 1); }
 .at-planta.pronta .at-petalas { scale: 1; }
 .at-nuvem { transition: opacity .6s; }
