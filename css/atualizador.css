@@ -107,7 +107,7 @@
 .aj-v { color: var(--green); margin-left: 6px; }
 .aj-msg { min-height: 1.4em; color: #c9d4e0; }
 .aj-rodadas { margin: 6px 0 8px; padding-left: 22px; color: #c9d4e0; font-size: 15px; }
-.aj-assistente { background: #17352a; border-radius: 10px; padding: 8px 12px; }
+.aj-conteudo .aj-assistente { background: #17352a; border-radius: 10px; padding: 8px 12px; margin-right: 110px; } /* não passa por baixo do "Fechar" */
 .aj-check { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-weight: 700; }
 .aj-check input { width: 22px; height: 22px; }
 .aj-bloco { border: 2px solid #2a3a4c; border-radius: 14px; padding: 10px 14px 4px; margin: 0 0 14px; min-width: 0; transition: opacity .2s; }

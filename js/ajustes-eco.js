@@ -191,11 +191,17 @@ q('.aj-medir-distancia').addEventListener('click', (e) => tarefa(e.target, async
   const auto = S.calib.auto;
   msg('distancia', '⏳ Andando até a parede…');
   await mandaCalib({ auto: auto | P.CALIB_AUTO.SONAR }, true);
+  const inicio = distancia();
   await anda(55, 55, 5000, () => (S.carState?.distance ?? 999) < 35);
+  const fim = distancia();
   const c = await esperaCalib((x) => x.learnSpeed !== 100, 5000);
   if (!c) {
     await mandaCalib({ auto });
-    return msg('distancia', 'Não deu para medir. Comece a uns 1,5 m da parede, bem de frente para ela, e tente de novo.');
+    // mal saiu do lugar: falta força (o Eco só aceita a medida se andar pelo menos metade do que deveria)
+    const devagar = inicio !== P.NO_DISTANCE && fim !== P.NO_DISTANCE && fim > 60 && inicio - fim < 70;
+    return msg('distancia', devagar
+      ? 'Ele andou devagar demais e não chegou perto da parede. Dê mais força na aba Força (partida forte ou modo Forte) e tente de novo.'
+      : 'Não deu para medir. Comece a uns 1,5 m da parede, bem de frente para ela, e tente de novo.');
   }
   const distAdj = Math.max(50, Math.min(150, Math.round((c.distAdj * c.learnSpeed) / 100)));
   await mandaCalib({ distAdj, auto }, true);
@@ -207,11 +213,14 @@ q('.aj-medir-distancia').addEventListener('click', (e) => tarefa(e.target, async
 // O Eco freia sozinho quando a distância fica menor que brakeDist + uma margem pela velocidade (carcore). Aqui ele vai
 // até a parede com o freio ligado e o sonar diz onde parou de verdade. NUNCA aprende batendo: a primeira tentativa
 // começa com o freio bem antecipado, e entre as tentativas o Eco dá ré até ~1 m (pelo sonar da frente).
-export const FREIO_TOLERANCIA = 3; // cm
+// o sonar mede a cada ~60 ms: na velocidade máxima o Eco anda 3–4 cm entre duas medidas, então a mesma regulagem para
+// uns cm mais perto ou mais longe a cada vez (ruído). Tolerância de 4 cm e, perto do alvo, corrige só metade do erro
+export const FREIO_TOLERANCIA = 4; // cm
 export const FREIO_LIMITE_MS = 6000;
 export function proximoFreio(brakeDist, parou, alvo) {
   // parou perto demais (quase encostou): adianta de uma vez; senão, corrige pela diferença
-  const erro = parou < 4 ? -Math.max(10, alvo - parou + 8) : parou - alvo;
+  const bruto = parou - alvo;
+  const erro = parou < 4 ? -Math.max(10, alvo - parou + 8) : Math.abs(bruto) <= 8 ? bruto / 2 : bruto;
   return Math.max(5, Math.min(60, Math.round(brakeDist - erro)));
 }
 q('[data-config=autoBrake]').addEventListener('change', (e) => mandaConfig({ autoBrake: e.target.checked }));
@@ -230,11 +239,14 @@ async function ateParede() {
   let paradoDesde = 0;
   let andou = false;
   let freou = false;
+  let semSinal = false; // o Eco parou por ficar sem comando (Bluetooth engasgou): também não conta
   while (Date.now() - t0 < FREIO_LIMITE_MS) {
     S.transport?.send(P.encodeDrive({ seq: seq++, left: 100, right: 100, flags: 0 }));
     await sleep(100);
-    if (S.carState?.status & P.STATUS.OBSTACLE) freou = true;
     if (!parado()) andou = true;
+    // só vale o aviso depois de ele sair andando (o de antes pode ser o resto da tentativa anterior)
+    if (andou && S.carState?.status & P.STATUS.OBSTACLE) freou = true;
+    if (andou && S.carState?.status & P.STATUS.FAILSAFE) semSinal = true;
     if (andou && parado()) {
       paradoDesde ||= Date.now();
       if (Date.now() - paradoDesde > 500) break;
@@ -243,7 +255,7 @@ async function ateParede() {
   await anda(0, 0, 0);
   await sleep(300);
   if (!andou || !parado()) return null;
-  freioAgiu = freou;
+  freioAgiu = freou && !semSinal;
   return distancia();
 }
 // ré até ficar a ~1 m da parede (o sonar da frente mede a parede se afastando); no máximo 2 s
@@ -276,6 +288,7 @@ q('.aj-calibrar-freio').addEventListener('click', (e) => tarefa(e.target, async 
   let freio = Math.min(60, Math.max(S.car.config.brakeDist, alvo + 20));
   let certas = 0;
   let estranhas = 0;
+  const paradas = [];
   for (let i = 0; i < 6; i++) {
     if (distancia() < 60) {
       msg('freio', '⏳ Dando ré para começar de novo…');
@@ -307,9 +320,10 @@ q('.aj-calibrar-freio').addEventListener('click', (e) => tarefa(e.target, async 
     lista.append(item);
     registra('calibracao freio', { tentativa: i + 1, parou, freio, alvo });
     certas = certo ? certas + 1 : 0;
+    paradas.push(parou);
     if (certas >= 2) {
       registra('calibracao', { freio });
-      return msg('freio', `✅ Pronto: parou a ${alvo} cm duas vezes seguidas. Ele começa a frear a ${freio} cm (mais cedo quando está rápido).`);
+      return msg('freio', `✅ Pronto: parou perto dos ${alvo} cm duas vezes seguidas (${paradas.slice(-2).join(' e ')} cm). Ele começa a frear a ${freio} cm (mais cedo quando está rápido).`);
     }
     if (!certo) freio = novo;
     await volta();
@@ -367,7 +381,7 @@ q('.aj-quarto').addEventListener('click', (e) => tarefa(e.target, async () => {
   msg('giro', r.travou ? '⚠️ Travou: não teve força para girar. Use "Calibrar o giro".' : `Girou ${Math.abs(r.deg)}° (o certo é 90°).`);
 }));
 q('.aj-calibrar-giro').addEventListener('click', (e) => tarefa(e.target, async () => {
-  const lista = q('.aj-rodadas');
+  const lista = q('.aj-aba[data-aba=giro] .aj-rodadas');
   lista.replaceChildren();
   if (!temGiroscopio()) return msg('giro', 'Este Eco está sem o giroscópio ligado: o giro dele é por tempo.');
   msg('giro', '⏳ Calibrando… deixe o Eco no chão, com espaço em volta.');
