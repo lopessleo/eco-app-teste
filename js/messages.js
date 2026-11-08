@@ -11,6 +11,7 @@ const DECODERS = {
   [P.MSG.CALIB_INFO]: [8, P.decodeCalib, 'calib', (v) => { S.calib = v; }],
   [P.MSG.LESSON_INFO]: [P.LESSON_MSG_BYTES, P.decodeLesson, 'carLesson', (v) => { S.carLesson = v; }],
   [P.MSG.TURN_DONE]: [5, P.decodeTurnDone, 'turnDone'],
+  [P.MSG.AJUSTE_INFO]: [P.AJUSTE_BYTES, P.decodeAjuste, 'ajuste', (v) => { S.ajuste = v; }],
   [P.MSG.OTA_STATUS]: [6, P.decodeOtaStatus, 'otaStatus'],
   [P.MSG.LINE_RESULT]: [6, P.decodeLineResult, 'lineResult'],
   [P.MSG.DENIED]: [1, () => null, 'denied'],

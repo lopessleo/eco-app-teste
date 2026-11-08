@@ -21,6 +21,20 @@ const lePausas = () => {
   }
 };
 const adiado = (id) => Date.now() - (lePausas()[id] ?? 0) < UM_DIA;
+// "Não quero atualizar": guarda a versão recusada; só volta a avisar quando sair uma mais nova que ela
+const RECUSADA = 'atualizacao.recusada';
+const leRecusadas = () => {
+  try {
+    return JSON.parse(localStorage.getItem(RECUSADA) || '{}');
+  } catch {
+    return {};
+  }
+};
+const recusou = (id, nova) => {
+  const r = String(leRecusadas()[id] ?? '').split('.').map(Number);
+  return r.length === 2 && !maisVelha(r, nova);
+};
+let ofertada = null;
 function adia(id) {
   try {
     localStorage.setItem(DEPOIS, JSON.stringify({ ...lePausas(), [id]: Date.now() }));
@@ -34,18 +48,30 @@ on('connection', (st) => {
   if (st !== 'connected') conferido = null;
 });
 on('info', async (car) => {
-  if (conferido === car.id || S.classLink || S.atualizando) return;
+  if (conferido === car.id || S.classLink || S.atualizando || S.ajustando) return;
   conferido = car.id;
   await new Promise((r) => setTimeout(r, 800)); // o CAPS chega logo depois do INFO (Eco antigo nem manda: é protótipo)
   if ((S.caps?.board ?? BOARD.PROTOTIPO) !== BOARD.PROTOTIPO || adiado(car.id)) return;
   const nova = await versaoPublicada(PASTA);
-  if (!nova || !maisVelha(car.fw, nova) || !S.transport?.connected) return;
+  if (!nova || !maisVelha(car.fw, nova) || !S.transport?.connected || recusou(car.id, nova)) return;
+  ofertada = nova;
   $('#aa-versoes').textContent = `Versão ${car.fw.join('.')} → ${nova.join('.')}`;
   $('#aviso-atualizacao').showModal();
 });
 
 $('#aa-depois').addEventListener('click', () => {
   if (S.car) adia(S.car.id);
+  $('#aviso-atualizacao').close();
+});
+$('#aa-nunca').addEventListener('click', () => {
+  if (S.car && ofertada) {
+    try {
+      localStorage.setItem(RECUSADA, JSON.stringify({ ...leRecusadas(), [S.car.id]: ofertada.join('.') }));
+    } catch {
+      // sem armazenamento: o "Depois" de um dia vale
+    }
+    adia(S.car.id);
+  }
   $('#aviso-atualizacao').close();
 });
 $('#aa-agora').addEventListener('click', () => {

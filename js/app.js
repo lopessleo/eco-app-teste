@@ -20,6 +20,7 @@ import './cenario-ui.js';
 import './aviso-atualizacao.js';
 import './caixa-preta.js';
 import './atualizador.js';
+import './ajustes-eco.js';
 
 // ---------- Inicialização ----------
 

@@ -36,6 +36,7 @@ export const MSG = {
   IO: 0x27, // [27, motor E i8, motor D i8, (r, g, b) × 4 luzes, som (Hz / 10)]: portas uma a uma (cenário maquete)
   TELA: 0x28, // [28, linha 0..3 (255 = limpa), texto ≤ 16]: escreve na telinha (módulo da expansão)
   SERVO: 0x29, // [29, servo 0..7, ângulo 0..180 (255 = solto)]: módulo de servos
+  AJUSTE: 0x2b, // [2b, força do giro %, força mínima do giro %, partida forte ×10 ms, modo dos motores]: ajustes do Eco
   REMOTE_CMD: 0x2a, // [2a, msg...]: mensagem para o ECOcontroller pareado; o Eco só repassa (atualização sem a ECObase)
   STATE: 0x81,
   INFO: 0x82,
@@ -64,6 +65,7 @@ export const MSG = {
   SENSORS: 0x99,
   REMOTE_INFO: 0x9a, // [9a, mac ×6, fw0, fw1, placa, opções RC_OPT, pilha %]: o ECOcontroller pareado, ligado agora
   REMOTE_REPLY: 0x9b, // [9b, msg...]: resposta do ECOcontroller a um REMOTE_CMD
+  AJUSTE_INFO: 0x9c, // [9c, igual ao AJUSTE]: os ajustes gravados no Eco (logo depois do HELLO e a cada AJUSTE)
 };
 
 // Versão da placa e o que ela tem (documentos/placa.md). CAPS: [0x92, placa, caps u16], logo depois do HELLO.
@@ -594,6 +596,28 @@ export function decodeMelody(b) {
 
 // CALIB (app -> carro, grava) e CALIB_INFO (carro -> app) têm o mesmo corpo.
 // Bytes 9-10 (aprendidos) só valem do carro para o app; reset = CALIB com o bit RESET no byte "auto".
+// AJUSTE / AJUSTE_INFO: o que se acerta na página de ajustes do app, gravado no Eco.
+// giroForca: força máxima girando no lugar (%) · giroMin: a mínima, que vence o atrito (%) · partida: força total por
+// partida × 10 ms quando um motor sai do parado (motor fraco que não arranca) · motorModo: como o PWM aciona o motor
+// (MOTOR_MODO; só a HAL do protótipo usa). O padrão é o de sempre; o protótipo de bancada tem o dele (firmware).
+export const AJUSTE_BYTES = 5;
+export const MOTOR_MODO = { ATUAL: 0, FORTE: 1, SILENCIOSO: 2 }; // 1 kHz fast decay · 1 kHz slow decay · 20 kHz slow decay
+export const AJUSTE_PADRAO = { giroForca: 45, giroMin: 10, partida: 0, motorModo: MOTOR_MODO.ATUAL };
+export function normalizeAjuste(a = {}) {
+  const giroForca = clamp(Math.round(num(a.giroForca, AJUSTE_PADRAO.giroForca)), 20, 100);
+  return {
+    giroForca,
+    giroMin: clamp(Math.round(num(a.giroMin, AJUSTE_PADRAO.giroMin)), 10, giroForca),
+    partida: clamp(Math.round(num(a.partida, AJUSTE_PADRAO.partida)), 0, 30),
+    motorModo: clamp(Math.round(num(a.motorModo, AJUSTE_PADRAO.motorModo)), 0, 2),
+  };
+}
+export function encodeAjuste(a, type = MSG.AJUSTE) {
+  const n = normalizeAjuste(a);
+  return Uint8Array.of(type, n.giroForca, n.giroMin, n.partida, n.motorModo);
+}
+export const decodeAjuste = (b) => normalizeAjuste({ giroForca: b[1], giroMin: b[2], partida: b[3], motorModo: b[4] });
+
 export function encodeCalib(calib, type = MSG.CALIB, reset = false) {
   const c = sanitizeCalib(calib);
   return Uint8Array.of(

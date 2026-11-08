@@ -106,6 +106,9 @@
         <p>Força total nos motores e as rodas girando para o lado certo. Só para os Ecos de protótipo; leva uns 5 minutos,
         com o Eco ligado perto do celular.</p>
         <button id="btn-atualizar" class="faq-link">🔧 Atualizar o Eco</button></details>
+      <details class="faq" id="faq-ajustes"><summary>Ajustar o Eco do protótipo</summary>
+        <p>Força dos motores, andar reto, distância e giro, com testes na hora. Fica gravado no Eco.</p>
+        <button id="btn-ajustes" class="faq-link">⚙️ Ajustar o Eco</button></details>
       <details class="faq" id="faq-relatorio"><summary>Enviar um relatório de problema</summary>
         <p>Algo deu errado? O relatório mostra o que aconteceu no app e no Eco para a equipe corrigir. Você vê tudo antes de
         enviar. Não vai nome de criança, turma nem localização.</p>
@@ -336,6 +339,68 @@
     </form>
   </dialog>
 
+  <!-- Ajustes do Eco (ajustes-eco.js): força, andar reto, distância e giro, com testes na hora -->
+  <dialog id="ajustes" class="atualizador ajustes">
+    <button class="at-fechar" aria-label="Fechar">✕ Fechar</button>
+    <div class="aj-tela" data-tela="conectar">
+      <div class="aj-centro"><h2>Ajustes do Eco</h2><p>Ligue o Eco, deixe ele pertinho do celular e conecte.</p>
+        <button class="primary grande aj-conectar">🔵 Conectar o Eco</button><p class="aj-msg"></p></div>
+    </div>
+    <div class="aj-tela aj-com-abas" data-tela="ajustes">
+      <nav class="aj-abas">
+        <button data-aba="forca" class="on">💪 Força</button>
+        <button data-aba="reto">➡️ Andar reto</button>
+        <button data-aba="distancia">📏 Distância</button>
+        <button data-aba="giro">🔄 Giro</button>
+      </nav>
+      <div class="aj-conteudo">
+        <p class="aj-assistente hidden">Calibração depois da atualização: <b class="aj-passo"></b>. É opcional: dá para pular qualquer passo.</p>
+
+        <section class="aj-aba" data-aba="forca">
+          <h2>Força dos motores</h2>
+          <label class="aj-campo"><span>Velocidade máxima <b class="aj-v" data-de="maxSpeed"></b></span>
+            <input type="range" min="30" max="100" step="5" data-config="maxSpeed"></label>
+          <div class="aj-campo"><span>Arrancada</span>
+            <div class="at-opcoes" data-config="accel"><button data-v="1">🐢 Suave</button><button data-v="2">Normal</button><button data-v="3">🐇 Rápida</button></div></div>
+          <label class="aj-campo"><span>Partida forte <b class="aj-v" data-de="partida"></b>
+            <small>Saindo do parado, o motor vai a 100 % por um instante: ajuda motor fraco a sair do lugar.</small></span>
+            <input type="range" min="0" max="30" step="2" data-ajuste="partida"></label>
+          <div class="aj-campo"><span>Modo dos motores
+            <small>Forte e Silencioso acionam o motor de um jeito que dá mais força. Teste e veja qual anda melhor.</small></span>
+            <div class="at-opcoes" data-ajuste="motorModo"><button data-v="0">Como era (1 kHz)</button><button data-v="1">💪 Forte (1 kHz)</button><button data-v="2">🤫 Silencioso (20 kHz)</button></div></div>
+          <div class="at-botoes"><button class="aj-testar-andar">▶ Testar: andar 1 s</button><button class="aj-testar-girar">▶ Testar: girar 1 s</button></div>
+          <p class="aj-msg"></p>
+        </section>
+
+        <section class="aj-aba hidden" data-aba="reto">
+          <h2>Andar reto</h2>
+          <p>Deixe o Eco no chão com uns 1,5 m livres na frente. Ele anda 3 segundos e o giroscópio mede o quanto ele puxa para um lado.</p>
+          <div class="at-botoes"><button class="primary aj-medir-reto">▶ Medir andando reto</button>
+            <button class="aj-trim" data-d="-2">⬅ Ele puxa para a esquerda</button><button class="aj-trim" data-d="2">Ele puxa para a direita ➡</button></div>
+          <p class="aj-msg"></p>
+          <button class="at-link aj-proximo">Próximo passo →</button>
+        </section>
+
+        <section class="aj-aba hidden" data-aba="distancia">
+          <h2>Distância</h2>
+          <p>Coloque o Eco a uns 1,5 m de uma parede, de frente para ela. Ele anda até perto da parede e o sonar mede a velocidade de verdade.</p>
+          <div class="at-botoes"><button class="primary aj-medir-distancia">▶ Medir pela parede</button></div>
+          <p class="aj-msg"></p>
+          <button class="at-link aj-proximo">Próximo passo →</button>
+        </section>
+
+        <section class="aj-aba hidden" data-aba="giro">
+          <h2>Giro</h2>
+          <p>Deixe o Eco no chão, com espaço em volta. Ele dá um quarto de volta para cada lado, várias vezes, e eu ajusto a força até girar certinho.</p>
+          <div class="at-botoes"><button class="primary aj-calibrar-giro">▶ Calibrar o giro</button><button class="aj-quarto">↻ Girar um quarto de volta</button></div>
+          <ol class="aj-rodadas"></ol>
+          <p class="aj-msg"></p>
+          <button class="at-link aj-proximo">Terminar ✓</button>
+        </section>
+      </div>
+    </div>
+  </dialog>
+
   <!-- Atualizador do Eco (atualizador.js): o mascote conduz a instalação, as rodinhas e a conferência -->
   <dialog id="atualizador" class="atualizador">
     <button class="at-fechar" aria-label="Fechar">✕ Fechar</button>
@@ -444,7 +509,8 @@
       <div class="at-palco"></div>
       <div class="at-conversa"><h2>Tudo pronto! Seu Eco está novinho 🎉</h2>
         <p>Atualizado, com as rodinhas conferidas e força total. Bora brincar!</p>
-        <div class="at-botoes"><button class="primary grande at-brincar">🚀 Começar a brincar</button></div>
+        <div class="at-botoes"><button class="primary grande at-brincar">🚀 Começar a brincar</button>
+          <button class="grande at-calibrar-depois hidden">🎯 Calibrar agora (opcional)</button></div>
         <button class="at-link at-voltar">Algo ficou estranho? Voltar para a versão antiga</button></div>
     </div>
     <div class="at-tela at-duas" data-tela="ja">
@@ -477,7 +543,8 @@
     <p>Força total nos motores e no giro, e um teste rápido para as rodas girarem para o lado certo. Leva uns 5 minutos,
     com o Eco ligado perto do celular.</p>
     <p id="aa-versoes" class="muted"></p>
-    <div class="actions"><button id="aa-depois">Depois</button><span class="spacer"></span><button id="aa-agora" class="primary">⬆️ Atualizar agora</button></div>
+    <div class="actions"><button id="aa-depois">Depois</button><button id="aa-nunca" class="at-link">Não quero atualizar</button>
+      <span class="spacer"></span><button id="aa-agora" class="primary">⬆️ Atualizar agora</button></div>
   </dialog>
 
   <!-- Quem é você? (lista da turma, ou o nome digitado numa aula sem lista) -->

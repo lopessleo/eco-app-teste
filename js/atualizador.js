@@ -7,7 +7,7 @@ import * as P from './protocol.js';
 import { S, api, on } from './state.js';
 import { $ } from './util.js';
 import { FirmwareUpload } from './ota.js';
-import { ARQUIVO_NORMAL, maisVelha, varianteDasRodas, versaoPublicada } from './atualizar-rodas.js';
+import { ARQUIVO_NORMAL, anotaVersao, arquivoGuardado, maisVelha, publicado, varianteDasRodas, versaoAnterior } from './atualizar-rodas.js';
 import { anotaEco, registra } from './caixa-preta-base.js';
 
 const params = new URLSearchParams(location.search);
@@ -35,6 +35,7 @@ function mascote(onde, { pose = '', cara = 'normal', jeito = '' } = {}) {
 
 function tela(nome) {
   for (const t of dlg.querySelectorAll('.at-tela')) t.classList.toggle('on', t.dataset.tela === nome);
+  rotulaVoltar(); // a versão para onde voltar muda depois de cada instalação
 }
 function confete() {
   const box = dlg.querySelector('.at-confete');
@@ -90,6 +91,7 @@ async function instala(arquivo, { conserto = false, titulo, versao } = {}) {
   mascote(t.querySelector('.at-palco'), conserto ? { cara: 'pensando', pose: 'apontando' } : { cara: 'feliz', jeito: 'esperando' });
   status.textContent = 'Baixando a atualização…';
   registra('atualizacao', { arquivo, eco: S.car?.name ?? '', de: S.car?.fw?.join('.') ?? '' });
+  if (S.car) anotaVersao(S.car.id, S.car.fw); // a de antes (a primeira vez, sem saber o jeito das rodas)
   try {
     const res = await fetch(`${PASTA}/${arquivo}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Não consegui baixar a atualização. O celular está com internet?');
@@ -104,6 +106,7 @@ async function instala(arquivo, { conserto = false, titulo, versao } = {}) {
     mascote(t.querySelector('.at-palco'), { cara: 'pensando', pose: conserto ? 'apontando' : '', jeito: 'esperando' });
     if (!(await esperaVolta(45000))) throw new Error('O Eco não voltou. Desligue e ligue a powerbank e conecte de novo.');
     if (versao && maisVelha(S.car.fw, versao)) throw new Error(`O Eco voltou na versão ${S.car.fw.join('.')}: a nova não ficou. Ele se protegeu e voltou para a anterior.`);
+    anotaVersao(S.car.id, S.car.fw, arquivo.split('/').pop());
     desenho.classList.replace('esperando', 'pronta');
     mascote(t.querySelector('.at-palco'), { cara: 'animado', pose: 'comemorando' });
     await sleep(1400); // a flor abre / as rodas ficam verdes antes da próxima tela
@@ -208,8 +211,10 @@ async function comeca() {
     return;
   }
   if ((S.caps?.board ?? P.BOARD.PROTOTIPO) !== P.BOARD.PROTOTIPO) return erro('Este Eco não é do protótipo: a atualização dele é feita pelo técnico da escola.');
-  versaoNova = await versaoPublicada(PASTA);
+  site = await publicado(PASTA);
+  versaoNova = site?.versao ?? null;
   if (!versaoNova) return erro('Não achei a atualização. O celular está com internet?');
+  rotulaVoltar();
   if (!maisVelha(S.car.fw, versaoNova)) {
     tela('ja');
     dlg.querySelector('[data-tela=ja] .at-msg').textContent = `O ${S.car.name} já está na versão ${S.car.fw.join('.')}.`;
@@ -280,6 +285,7 @@ chaoT.querySelector('.at-girar-chao').addEventListener('click', async (e) => {
 chaoT.querySelector('.at-giro-sim').addEventListener('click', () => {
   registra('conferencia no chao', { resultado: 'ok' });
   tela('fim');
+  dlg.querySelector('.at-calibrar-depois').classList.toggle('hidden', !!S.baseKit || !api.ajustes);
   mascote(dlg.querySelector('[data-tela=fim] .at-palco'), { cara: 'apaixonado', pose: 'comemorando' });
   confete();
 });
@@ -290,17 +296,34 @@ for (const b of chaoT.querySelectorAll('.at-nao')) {
   });
 }
 dlg.querySelector('[data-tela=fim] .at-brincar').addEventListener('click', fecha);
+dlg.querySelector('[data-tela=fim] .at-calibrar-depois').addEventListener('click', () => {
+  fecha();
+  api.ajustes?.abre({ calibrar: true });
+});
 const erroT = dlg.querySelector('[data-tela=erro]');
 erroT.querySelector('.at-de-novo').addEventListener('click', comeca);
 erroT.querySelector('.at-relatorio').addEventListener('click', () => {
   fecha();
   $('#btn-relatorio')?.click();
 });
+// "voltar": para a versão que este Eco tinha antes (histórico), mesmo que tenha pulado várias
+let site = null;
+const destinoVoltar = () => (S.car ? versaoAnterior(S.car.id, S.car.fw, site?.versoes ?? []) : null);
+function rotulaVoltar() {
+  const d = destinoVoltar();
+  for (const b of dlg.querySelectorAll('.at-voltar')) {
+    b.classList.toggle('hidden', !d);
+    if (d) b.textContent = `${b.dataset.antes ?? ''}Voltar para a versão ${d.versao.join('.')}`;
+  }
+}
 for (const b of dlg.querySelectorAll('.at-voltar')) {
+  if (b.textContent.startsWith('Algo ficou estranho?')) b.dataset.antes = 'Algo ficou estranho? ';
   b.addEventListener('click', async () => {
     if (!conectado()) return erro('Conecte o Eco primeiro.');
-    if (!confirm('Voltar o Eco para a versão antiga? Ele perde a força total e o conserto das rodinhas.')) return;
-    if (await instala('prototipo-anterior.bin', { titulo: 'Voltando para a versão antiga' })) {
+    const d = destinoVoltar();
+    if (!d) return erro('Não sei para qual versão voltar: este Eco não tem outra guardada.');
+    if (!confirm(`Voltar o Eco para a versão ${d.versao.join('.')}? Ele perde o que veio nas versões depois dela.`)) return;
+    if (await instala(arquivoGuardado(d), { titulo: `Voltando para a versão ${d.versao.join('.')}` })) {
       tela('ja');
       dlg.querySelector('[data-tela=ja] .at-msg').textContent = `Pronto: o ${S.car.name} voltou para a versão ${S.car.fw.join('.')}.`;
       mascote(dlg.querySelector('[data-tela=ja] .at-palco'), { cara: 'normal', pose: 'maos-na-cintura' });
