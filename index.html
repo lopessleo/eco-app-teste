@@ -352,6 +352,7 @@
         <button data-aba="reto">➡️ Andar reto</button>
         <button data-aba="distancia">📏 Distância</button>
         <button data-aba="giro">🔄 Giro</button>
+        <button data-aba="freio">🛑 Freio</button>
       </nav>
       <div class="aj-conteudo">
         <p class="aj-assistente hidden">Calibração depois da atualização: <b class="aj-passo"></b>. É opcional: dá para pular qualquer passo.</p>
@@ -387,6 +388,22 @@
           <div class="at-botoes"><button class="primary aj-medir-distancia">▶ Medir pela parede</button></div>
           <p class="aj-msg"></p>
           <button class="at-link aj-proximo">Próximo passo →</button>
+        </section>
+
+        <section class="aj-aba hidden" data-aba="freio">
+          <h2>Freio anti-colisão</h2>
+          <p>Com o sonar, o Eco freia sozinho perto de uma parede. Quanto mais rápido, mais cedo ele começa a frear.</p>
+          <label class="aj-check"><input type="checkbox" data-config="autoBrake"> Freio automático ligado</label>
+          <label class="aj-campo"><span>Começa a frear a <b class="aj-v" data-de="brakeDist"></b>
+            <small>Mais distância: para mais longe da parede. Menos: chega mais perto.</small></span>
+            <input type="range" min="5" max="60" step="1" data-config="brakeDist"></label>
+          <label class="aj-campo"><span>Quero que ele pare a <b class="aj-v" data-de="alvoFreio"></b> da parede
+            <small>Para a calibração automática.</small></span>
+            <input type="range" min="5" max="40" step="1" value="10" class="aj-alvo-freio"></label>
+          <p class="dica-freio">Coloque o Eco a 1 m de uma parede, de frente para ela, com espaço livre atrás (ele dá ré sozinho entre as tentativas).</p>
+          <div class="at-botoes"><button class="primary aj-calibrar-freio">▶ Calibrar o freio</button><button class="aj-testar-freio">▶ Testar: ir até a parede</button></div>
+          <ol class="aj-rodadas aj-rodadas-freio"></ol>
+          <p class="aj-msg"></p>
         </section>
 
         <section class="aj-aba hidden" data-aba="giro">

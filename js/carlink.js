@@ -57,7 +57,7 @@ function renderState() {
   $('#btn-police').classList.toggle('lit', !!(s.lights & L.POLICE));
 
   const dist = $('#dist');
-  const near = s.distance !== P.NO_DISTANCE && s.distance < (S.car?.config.brakeDist ?? 20) + 15;
+  const near = s.distance !== P.NO_DISTANCE && s.distance < (S.car?.config.brakeDist ?? P.DEFAULT_CONFIG.brakeDist) + 15;
   dist.textContent = s.distance === P.NO_DISTANCE ? '📏 — cm' : `📏 ${s.distance} cm`;
   dist.classList.toggle('near', near);
   // sem sonar na porta de sensor (sensores de luz ou vazia): não tem distância para mostrar

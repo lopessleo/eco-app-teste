@@ -428,7 +428,7 @@ export const DEFAULT_CONFIG = {
   maxSpeed: 60, // % da velocidade total (10..100)
   accel: 2, // 1 suave, 2 normal, 3 rápida
   autoBrake: true,
-  brakeDist: 20, // cm (5..60)
+  brakeDist: 30, // cm (5..60): onde o freio anti-colisão começa (mais cedo quando está rápido)
   autoSignal: false,
   reverseBeep: true,
   ledBrightness: 40, // % (5..100)

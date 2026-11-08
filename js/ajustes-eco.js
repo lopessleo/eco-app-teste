@@ -82,6 +82,12 @@ function preenche() {
     q('[data-de=maxSpeed]').textContent = `${c.maxSpeed}%`;
     for (const b of dlg.querySelectorAll('[data-config=accel] button')) b.classList.toggle('on', Number(b.dataset.v) === c.accel);
   }
+  if (c) {
+    q('[data-config=autoBrake]').checked = c.autoBrake;
+    q('[data-config=brakeDist]').value = c.brakeDist;
+    q('[data-de=brakeDist]').textContent = `${c.brakeDist} cm`;
+  }
+  q('[data-de=alvoFreio]').textContent = `${q('.aj-alvo-freio').value} cm`;
   q('[data-ajuste=partida]').value = a.partida;
   q('[data-de=partida]').textContent = a.partida ? `${a.partida * 10} ms` : 'desligada';
   for (const b of dlg.querySelectorAll('[data-ajuste=motorModo] button')) b.classList.toggle('on', Number(b.dataset.v) === a.motorModo);
@@ -192,6 +198,103 @@ q('.aj-medir-distancia').addEventListener('click', (e) => tarefa(e.target, async
   await mandaCalib({ distAdj, auto }, true);
   registra('calibracao', { distancia: distAdj });
   msg('distancia', `✅ Medido: ele anda ${c.learnSpeed}% do que eu calculava. As distâncias dos programas já levam isso em conta.`);
+}));
+
+// ---------- freio anti-colisão ----------
+// O Eco freia sozinho quando a distância fica menor que brakeDist + uma margem pela velocidade (carcore). Aqui ele vai
+// até a parede com o freio ligado e o sonar diz onde parou de verdade. NUNCA aprende batendo: a primeira tentativa
+// começa com o freio bem antecipado, e entre as tentativas o Eco dá ré até ~1 m (pelo sonar da frente).
+export const FREIO_TOLERANCIA = 3; // cm
+export const FREIO_LIMITE_MS = 6000;
+export function proximoFreio(brakeDist, parou, alvo) {
+  // parou perto demais (quase encostou): adianta de uma vez; senão, corrige pela diferença
+  const erro = parou < 4 ? -Math.max(10, alvo - parou + 8) : parou - alvo;
+  return Math.max(5, Math.min(60, Math.round(brakeDist - erro)));
+}
+q('[data-config=autoBrake]').addEventListener('change', (e) => mandaConfig({ autoBrake: e.target.checked }));
+q('[data-config=brakeDist]').addEventListener('input', (e) => { q('[data-de=brakeDist]').textContent = `${e.target.value} cm`; });
+q('[data-config=brakeDist]').addEventListener('change', (e) => mandaConfig({ brakeDist: Number(e.target.value) }));
+q('.aj-alvo-freio').addEventListener('input', (e) => { q('[data-de=alvoFreio]').textContent = `${e.target.value} cm`; });
+const distancia = () => S.carState?.distance ?? P.NO_DISTANCE;
+const temSonarAgora = () => P.hasSonar(S.carState?.line?.port ?? 0) && distancia() !== P.NO_DISTANCE;
+const parado = () => Math.abs(S.carState?.left ?? 0) < 2 && Math.abs(S.carState?.right ?? 0) < 2;
+// vai até a parede na velocidade máxima, com o freio ligado; devolve onde parou (cm) ou null
+async function ateParede() {
+  const t0 = Date.now();
+  let paradoDesde = 0;
+  let andou = false;
+  while (Date.now() - t0 < FREIO_LIMITE_MS) {
+    S.transport?.send(P.encodeDrive({ seq: seq++, left: 100, right: 100, flags: 0 }));
+    await sleep(100);
+    if (!parado()) andou = true;
+    if (andou && parado()) {
+      paradoDesde ||= Date.now();
+      if (Date.now() - paradoDesde > 500) break;
+    } else paradoDesde = 0;
+  }
+  await anda(0, 0, 0);
+  await sleep(300);
+  return andou && parado() ? distancia() : null;
+}
+// ré até ficar a ~1 m da parede (o sonar da frente mede a parede se afastando); no máximo 2 s
+async function volta(ate = 90) {
+  await anda(-60, -60, 2000, () => distancia() !== P.NO_DISTANCE && distancia() >= ate);
+}
+function prontoParaFreio(aba) {
+  if (!temSonarAgora()) {
+    msg(aba, 'Precisa do sonar ligado e de uma parede na frente do Eco.');
+    return false;
+  }
+  if (!S.car.config.autoBrake) mandaConfig({ autoBrake: true });
+  return true;
+}
+q('.aj-testar-freio').addEventListener('click', (e) => tarefa(e.target, async () => {
+  if (!prontoParaFreio('freio')) return;
+  if (distancia() < 50) return msg('freio', 'Afaste o Eco: comece a pelo menos 50 cm da parede.');
+  msg('freio', '⏳ Indo até a parede…');
+  const parou = await ateParede();
+  registra('freio teste', { parou: parou ?? 'não parou', freio: S.car.config.brakeDist });
+  msg('freio', parou === null ? 'Ele não parou sozinho. O freio está ligado? Tem parede na frente?' : `Parou a ${parou} cm da parede.`);
+}));
+q('.aj-calibrar-freio').addEventListener('click', (e) => tarefa(e.target, async () => {
+  const lista = q('.aj-rodadas-freio');
+  lista.replaceChildren();
+  if (!prontoParaFreio('freio')) return;
+  const alvo = Number(q('.aj-alvo-freio').value);
+  // a primeira tentativa começa com o freio bem antecipado: para longe, nunca bate
+  let freio = Math.min(60, Math.max(S.car.config.brakeDist, alvo + 20));
+  let certas = 0;
+  for (let i = 0; i < 6; i++) {
+    if (distancia() < 60) {
+      msg('freio', '⏳ Dando ré para começar de novo…');
+      await volta();
+      if (distancia() < 60) return msg('freio', 'Coloque o Eco a 1 m da parede, com espaço atrás, e toque em "Calibrar o freio" de novo.');
+    }
+    mandaConfig({ brakeDist: freio, autoBrake: true });
+    await sleep(400);
+    msg('freio', `⏳ Tentativa ${i + 1}: indo até a parede…`);
+    const parou = await ateParede();
+    const item = document.createElement('li');
+    if (parou === null) {
+      item.textContent = 'não parou sozinho';
+      lista.append(item);
+      return msg('freio', '❌ Ele não parou sozinho. Confira se o sonar está encaixado e de frente para a parede.');
+    }
+    const novo = proximoFreio(freio, parou, alvo);
+    const certo = Math.abs(parou - alvo) <= FREIO_TOLERANCIA;
+    item.textContent = `parou a ${parou} cm ${certo ? '✓' : parou < alvo ? `(perto demais: frear antes)` : '(longe: frear mais tarde)'}`;
+    lista.append(item);
+    registra('calibracao freio', { tentativa: i + 1, parou, freio, alvo });
+    certas = certo ? certas + 1 : 0;
+    if (certas >= 2) {
+      registra('calibracao', { freio });
+      return msg('freio', `✅ Pronto: parou a ${alvo} cm duas vezes seguidas. Ele começa a frear a ${freio} cm (mais cedo quando está rápido).`);
+    }
+    if (!certo) freio = novo;
+    await volta();
+  }
+  mandaConfig({ brakeDist: freio });
+  msg('freio', `⚠️ Não acertou em 6 tentativas; ficou o melhor que deu (${freio} cm). Dá para calibrar de novo.`);
 }));
 
 // ---------- giro: rodadas automáticas ----------

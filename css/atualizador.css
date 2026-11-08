@@ -100,6 +100,9 @@
 .aj-msg { min-height: 1.4em; color: #c9d4e0; }
 .aj-rodadas { margin: 6px 0 8px; padding-left: 22px; color: #c9d4e0; font-size: 15px; }
 .aj-assistente { background: #17352a; border-radius: 10px; padding: 8px 12px; }
+.aj-check { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-weight: 700; }
+.aj-check input { width: 22px; height: 22px; }
+.dica-freio { background: #1d2a22; border-left: 4px solid var(--accent); border-radius: 8px; padding: 8px 12px; font-size: 15px; }
 .aj-conteudo .at-botoes button { min-height: 50px; padding: 10px 18px; font-size: 16px; border-radius: 14px; }
 .aj-conteudo .at-opcoes button { min-height: 48px; }
 
