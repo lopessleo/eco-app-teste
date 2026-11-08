@@ -1,6 +1,7 @@
 {
- "versao": "0.9",
- "gerado": "2026-11-08T13:15:52.614Z",
+ "versao": "0.10",
+ "anterior": "0.9",
+ "gerado": "2026-11-08T14:20:21.447Z",
  "variantes": [
   {
    "arquivo": "prototipo.bin",

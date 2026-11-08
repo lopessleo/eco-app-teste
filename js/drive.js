@@ -120,7 +120,7 @@ function applyPolicy(left, right, flags) {
 }
 
 setInterval(() => {
-  if (!S.transport?.connected || S.upload) return;
+  if (!S.transport?.connected || S.upload || S.atualizando) return; // atualizando: o atualizador manda os comandos
   // no modo programação e no seguidor quem dirige é o Eco: o DRIVE vai parado (é o "estou aqui")
   const [l, r] = computeMotors();
   let [left, right, flags] = applyPolicy(l, r, driveFlags());

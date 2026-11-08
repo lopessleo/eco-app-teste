@@ -421,7 +421,7 @@ on('sceneInfo', () => {
   aplicaAula();
   if (!perguntou) {
     perguntou = true;
-    if (!naAula() && disponiveis().length > 1 && !$('#cena-pick').open) abreEscolha(true);
+    if (!naAula() && disponiveis().length > 1 && !$('#cena-pick').open && !S.atualizando) abreEscolha(true); // atualizando: não interrompe
   }
   $('#cena-extra').innerHTML = '';
   temps.length = 0;

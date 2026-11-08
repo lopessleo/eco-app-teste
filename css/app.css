@@ -470,6 +470,13 @@ dialog {
   user-select: auto;
 }
 dialog::backdrop { background: #000a; }
+.aviso-atualizacao { max-width: 440px; padding: 18px 20px; }
+.aviso-atualizacao h2 { margin: 0 0 8px; font-size: 20px; }
+.relatorio { padding: 16px 18px; width: min(720px, calc(100vw - 24px)); }
+.relatorio h2 { margin: 0 0 4px; font-size: 19px; }
+.relatorio pre { max-height: 52dvh; overflow: auto; background: #0b0f14; border: 1px solid var(--line); border-radius: 10px; padding: 10px;
+  font: 12px/1.45 Consolas, ui-monospace, monospace; white-space: pre-wrap; word-break: break-word; user-select: text; }
+button.faq-link { border: 0; cursor: pointer; font: inherit; font-weight: 700; }
 dialog form { padding: 18px 20px; }
 dialog h2 { margin: 0 0 12px; }
 fieldset { border: 1px solid var(--line); border-radius: 14px; margin: 0 0 14px; padding: 12px 14px 2px; }

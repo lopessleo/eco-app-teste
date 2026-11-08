@@ -1,0 +1,85 @@
+/* Atualizador do Eco (js/atualizador.js): tela cheia, celular deitado, o mascote conduz cada passo */
+.atualizador { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; border-radius: 0; padding: 0;
+  background: radial-gradient(120% 90% at 30% 20%, #17322a 0%, var(--bg) 60%); color: var(--text); overflow: hidden; }
+.atualizador::backdrop { background: var(--bg); }
+.at-fechar { position: absolute; top: 10px; right: 12px; z-index: 3; background: transparent; border: 0; color: var(--muted); font-size: 15px; font-weight: 700; padding: 8px; }
+.at-tela { display: none; height: 100%; padding: 16px 22px 14px; box-sizing: border-box; }
+.at-tela.on { display: flex; }
+.at-tela h2 { margin: 0 0 6px; font-size: clamp(20px, 4.6dvh + 6px, 30px); line-height: 1.15; }
+.at-tela p { margin: 0 0 10px; color: #c9d4e0; font-size: clamp(14px, 2.4dvh + 6px, 18px); }
+.at-tela .grande { min-height: 56px; padding: 12px 22px; font-size: 18px; border-radius: 16px; }
+.at-botoes { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.at-link { background: none; border: 0; color: var(--muted); text-decoration: underline; padding: 6px 0; font: inherit; font-size: 14px; cursor: pointer; }
+
+/* palco do mascote (lado esquerdo) + conversa (lado direito) */
+.at-duas { flex-direction: row; align-items: center; gap: 18px; }
+.at-palco { flex: 0 0 34%; height: 100%; display: flex; align-items: flex-end; justify-content: center; position: relative; }
+.at-conversa { flex: 1; min-width: 0; }
+.at-mascote { height: min(86%, 330px); aspect-ratio: 537 / 1080; position: relative; }
+.at-mascote svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+/* trabalhando (instalar e consertar): o mascote ao lado, uma ilustração só, a barra embaixo */
+.at-trabalho { height: 100%; display: flex; flex-direction: column; padding: 6px 0 4px; box-sizing: border-box; }
+.at-trabalho .at-status { min-height: 1.4em; }
+.at-ilustra { flex: 1; min-height: 0; display: flex; justify-content: center; align-items: center; }
+.at-ilustra svg { height: 100%; max-height: 260px; width: auto; overflow: visible; }
+.at-barra { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.at-barra .at-trilho { flex: 1; height: 16px; border-radius: 8px; background: #243041; overflow: hidden; box-shadow: inset 0 0 0 2px #2f3d50; }
+.at-trilho i { display: block; height: 100%; width: 0; border-radius: 8px; background: linear-gradient(90deg, #2bb26c, #35d07f); transition: width .5s linear; }
+.at-barra b { font-size: clamp(20px, 5dvh, 30px); color: var(--green); min-width: 3.2em; text-align: right; }
+.at-nota { color: var(--muted) !important; font-size: 14px !important; margin: 4px 0 0 !important; }
+.esperando .eco-robo { animation: at-respira 1.8s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes at-respira { 50% { transform: translateY(-1.5%) scale(1.01); } }
+
+/* a plantinha: o caule cresce com --p, as folhas e a flor aparecem quando passam da vez delas */
+.at-cresce { transition: y .5s linear, height .5s linear; }
+.at-folha, .at-flor { transform-box: fill-box; transform-origin: 0 50%; opacity: 0; transition: opacity .4s; }
+.at-folha.on, .at-flor.on { opacity: 1; animation: at-brota .6s ease-out; }
+@keyframes at-brota { from { scale: .2; } }
+.at-flor { transform-origin: 50% 70%; }
+.at-flor .at-petalas { transform-box: fill-box; transform-origin: 50% 50%; scale: .35; transition: scale .8s cubic-bezier(.3, 1.6, .5, 1); }
+.at-planta.pronta .at-petalas { scale: 1; }
+.at-nuvem { transition: opacity .6s; }
+.at-gotas path { animation: at-chuva .9s linear infinite; }
+.at-gotas path:nth-child(2) { animation-delay: .3s; }
+.at-gotas path:nth-child(3) { animation-delay: .6s; }
+@keyframes at-chuva { from { transform: translateY(0); opacity: 1; } to { transform: translateY(70px); opacity: 0; } }
+.at-sol { opacity: 0; transition: opacity .6s; }
+.at-planta.pronta .at-nuvem, .at-planta.esperando .at-nuvem { opacity: 0; }
+.at-planta.pronta .at-sol, .at-planta.esperando .at-sol { opacity: 1; }
+
+/* o Eco de cima no conserto: engrenagens girando nas rodas, que ficam verdes com o certo no fim */
+.at-roda-ok { fill: #2d3640; stroke: #566273; stroke-width: 4; transition: fill .4s, stroke .4s; }
+.at-engrenagem { transform-box: fill-box; transform-origin: 50% 50%; animation: at-gira 1.4s linear infinite; }
+.at-engrenagem.ao-contrario { animation-direction: reverse; }
+@keyframes at-gira { to { transform: rotate(360deg); } }
+.at-certo { opacity: 0; transition: opacity .4s; }
+.at-oficina.pronta .at-roda-ok { fill: var(--accent); stroke: var(--green); }
+.at-oficina.pronta .at-engrenagem, .at-oficina.pronta .at-engrenagem + circle { display: none; }
+.at-oficina.pronta .at-certo { opacity: 1; }
+
+/* festa */
+.at-confete { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.at-confete i { position: absolute; top: -20px; width: 10px; height: 16px; border-radius: 2px; animation: at-cai linear forwards; }
+@keyframes at-cai { to { transform: translateY(110dvh) rotate(720deg); } }
+.at-selo { display: inline-block; padding: 4px 12px; border-radius: 999px; background: #17352a; color: var(--green); font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+
+/* rodinhas: o Eco visto de cima, as rodas para tocar */
+.at-eco-cima { flex: 0 0 34%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.at-eco-cima svg { height: min(92%, 320px); width: auto; }
+.at-roda { cursor: pointer; fill: #2d3640; stroke: #566273; stroke-width: 4; transition: fill .2s; }
+.at-roda.escolhida { fill: var(--accent); stroke: var(--green); }
+.at-roda.gira { animation: at-roda .25s linear infinite; }
+@keyframes at-roda { 50% { fill: #3a4656; } }
+.at-pergunta { display: none; }
+.at-pergunta.on { display: block; }
+.at-opcoes { display: flex; gap: 10px; flex-wrap: wrap; margin: 6px 0 4px; }
+.at-opcoes button { min-height: 52px; padding: 10px 18px; font-size: 17px; border-radius: 14px; }
+.at-opcoes button.on { background: var(--accent); border-color: var(--green); }
+.at-passos { display: flex; gap: 6px; margin-bottom: 8px; }
+.at-passos i { width: 28px; height: 6px; border-radius: 3px; background: #2a3442; }
+.at-passos i.on { background: var(--green); }
+
+@media (prefers-reduced-motion: reduce) {
+  .esperando .eco-robo, .at-gotas path, .at-engrenagem { animation: none; }
+}

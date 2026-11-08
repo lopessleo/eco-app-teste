@@ -2,7 +2,7 @@
 // Estratégia "rede primeiro": com internet sempre pega a versão nova; sem internet usa o cache.
 // A lista tem que ter TODOS os arquivos que o app usa (o teste tests/unit/app-files.test.mjs confere).
 
-const CACHE = 'carrinho-v23';
+const CACHE = 'carrinho-v27';
 const FILES = [
   './',
   'index.html',
@@ -13,10 +13,18 @@ const FILES = [
   'css/app.css',
   'css/program.css',
   'css/cenarios.css',
+  'css/atualizador.css',
   'js/air.js',
   'js/ajustes.js',
   'js/estudio-agente.js',
   'js/app.js',
+  'js/atualizador.js',
+  'js/atualizar-rodas.js',
+  'js/ota.js',
+  'js/ed25519.js',
+  'js/aviso-atualizacao.js',
+  'js/caixa-preta.js',
+  'js/caixa-preta-base.js',
   'js/brand.js',
   'js/blocos-cenario.js',
   'js/carlink.js',
@@ -75,7 +83,7 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
-  // firmware do protótipo (atualizar.html): ~1 MB cada, baixa na hora e não ocupa o celular
+  // firmware do protótipo (atualizador.js): ~1 MB cada, baixa na hora e não ocupa o celular
   if (new URL(e.request.url).pathname.includes('/firmware')) return;
   e.respondWith(
     fetch(e.request)

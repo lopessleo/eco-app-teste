@@ -2,6 +2,29 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
+  <!-- caixa-preta (js/caixa-preta-base.js): grava que a página abriu e os erros antes de tudo. Se o resto nem carregar,
+       a pista fica no celular (o app instalado e o navegador dividem esta memória) -->
+  <script>
+    (function () {
+      var K = 'eco.caixa-preta';
+      function grava(tipo, d) {
+        try {
+          var c = JSON.parse(localStorage.getItem(K) || '{}');
+          c.eventos = (c.eventos || []).concat([{ t: new Date().toISOString(), k: tipo, d: d }]).slice(-300);
+          localStorage.setItem(K, JSON.stringify(c));
+        } catch (e) { /* sem armazenamento */ }
+      }
+      var instalado = matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches;
+      grava('abriu', { pagina: location.pathname.split('/').pop() || 'index.html', instalado: instalado ? 'sim' : 'não', internet: navigator.onLine ? 'sim' : 'não' });
+      addEventListener('error', function (e) {
+        grava('erro', { msg: String(e.message).slice(0, 300), arquivo: String(e.filename || '').split('/').pop().split('?')[0], linha: e.lineno, coluna: e.colno });
+      });
+      addEventListener('unhandledrejection', function (e) {
+        var r = e.reason;
+        grava('erro', { msg: String((r && r.message) || r).slice(0, 300), pilha: String((r && r.stack) || '').slice(0, 400) });
+      });
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
   <meta name="theme-color" content="#0e1218">
   <title>Ecocreator</title>
@@ -10,6 +33,7 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/cenarios.css">
+  <link rel="stylesheet" href="css/atualizador.css">
   <link rel="stylesheet" href="css/program.css">
   <!-- ajustes feitos no Estúdio de interface (lançador): por último, vencem o resto -->
   <link rel="stylesheet" href="ajustes.css">
@@ -81,7 +105,11 @@
       <details class="faq" id="faq-atualizar"><summary>Atualizar o Eco do protótipo</summary>
         <p>Força total nos motores e as rodas girando para o lado certo. Só para os Ecos de protótipo; leva uns 5 minutos,
         com o Eco ligado perto do celular.</p>
-        <a class="faq-link" href="atualizar.html">🔧 Abrir a atualização</a></details>
+        <button id="btn-atualizar" class="faq-link">🔧 Atualizar o Eco</button></details>
+      <details class="faq" id="faq-relatorio"><summary>Enviar um relatório de problema</summary>
+        <p>Algo deu errado? O relatório mostra o que aconteceu no app e no Eco para a equipe corrigir. Você vê tudo antes de
+        enviar. Não vai nome de criança, turma nem localização.</p>
+        <button id="btn-relatorio" class="faq-link">📋 Ver e enviar o relatório</button></details>
       <details class="faq"><summary>Funciona no iPhone?</summary>
         <p>O Safari não tem Bluetooth para sites. No iPhone, use o navegador gratuito <b>Bluefy</b> e abra este mesmo endereço nele.</p></details>
     </section>
@@ -306,6 +334,150 @@
         <button value="join" class="primary">Entrar</button>
       </div>
     </form>
+  </dialog>
+
+  <!-- Atualizador do Eco (atualizador.js): o mascote conduz a instalação, as rodinhas e a conferência -->
+  <dialog id="atualizador" class="atualizador">
+    <button class="at-fechar" aria-label="Fechar">✕ Fechar</button>
+    <div class="at-confete"></div>
+    <div class="at-tela at-duas" data-tela="conectar">
+      <div class="at-palco"></div>
+      <div class="at-conversa"><h2>Vamos atualizar o seu Eco!</h2>
+        <p>Ligue o Eco na powerbank, deixe ele pertinho do celular e conecte.</p>
+        <div class="at-botoes"><button class="primary grande at-conectar">🔵 Conectar o Eco</button></div></div>
+    </div>
+    <div class="at-tela at-duas" data-tela="instalar">
+      <div class="at-palco"></div>
+      <div class="at-conversa at-trabalho">
+        <h2></h2><p class="at-status"></p>
+        <div class="at-ilustra"><svg class="at-planta" viewBox="0 0 260 300" aria-hidden="true">
+          <g class="at-nuvem" transform="translate(-34 -16)"><path d="M70 46 a22 22 0 0 1 40 -14 a28 28 0 0 1 52 6 a20 20 0 0 1 6 39 h-92 a18 18 0 0 1 -6 -31 z" fill="#d9e6f2"/>
+            <g class="at-gotas" fill="#4dabf7"><path d="M95 92 q5 9 0 13 q-5 -4 0 -13z"/><path d="M125 100 q5 9 0 13 q-5 -4 0 -13z"/><path d="M155 92 q5 9 0 13 q-5 -4 0 -13z"/></g></g>
+          <g class="at-sol"><circle cx="212" cy="52" r="20" fill="#ffd23f"/><g stroke="#ffd23f" stroke-width="5" stroke-linecap="round">
+            <path d="M212 18v-8M212 94v-8M178 52h-8M254 52h-8M188 28l-6-6M242 82l-6-6M236 28l6-6M182 82l6-6"/></g></g>
+          <clipPath id="at-cresce"><rect class="at-cresce" x="0" y="236" width="260" height="0"/></clipPath>
+          <path class="at-caule" clip-path="url(#at-cresce)" d="M130 236 C 126 200, 136 168, 130 132 S 128 104, 130 88" fill="none" stroke="#2bb26c" stroke-width="8" stroke-linecap="round"/>
+          <path class="at-folha" data-a="0.25" transform="translate(129 206) rotate(200) scale(.9)" d="M0 0 C 18 -20 48 -18 62 0 C 48 16 18 18 0 0 Z" fill="#35d07f"/>
+          <path class="at-folha" data-a="0.42" transform="translate(132 178) rotate(-20) scale(.9)" d="M0 0 C 18 -20 48 -18 62 0 C 48 16 18 18 0 0 Z" fill="#2bb26c"/>
+          <path class="at-folha" data-a="0.58" transform="translate(130 150) rotate(205) scale(.75)" d="M0 0 C 18 -20 48 -18 62 0 C 48 16 18 18 0 0 Z" fill="#35d07f"/>
+          <path class="at-folha" data-a="0.72" transform="translate(131 124) rotate(-25) scale(.7)" d="M0 0 C 18 -20 48 -18 62 0 C 48 16 18 18 0 0 Z" fill="#2bb26c"/>
+          <g class="at-flor" data-a="0.88">
+            <g class="at-petalas" fill="#ff8fab"><circle cx="130" cy="64" r="13"/><circle cx="150" cy="78" r="13"/><circle cx="143" cy="101" r="13"/>
+              <circle cx="117" cy="101" r="13"/><circle cx="110" cy="78" r="13"/></g>
+            <circle cx="130" cy="84" r="12" fill="#ffb020"/></g>
+          <path d="M84 236 h92 l-10 56 h-72 z" fill="#c8693c"/><rect x="78" y="226" width="104" height="16" rx="6" fill="#d97b4a"/>
+          <ellipse cx="130" cy="230" rx="44" ry="6" fill="#5c3b25"/>
+        </svg></div>
+        <div class="at-barra"><div class="at-trilho"><i></i></div><b class="at-pct">0%</b></div>
+        <p class="at-nota">Não desligue o Eco</p>
+      </div>
+    </div>
+    <div class="at-tela at-duas" data-tela="conserto">
+      <div class="at-palco"></div>
+      <div class="at-conversa at-trabalho">
+        <h2></h2><p class="at-status"></p>
+        <div class="at-ilustra"><svg class="at-oficina" viewBox="0 0 220 320" aria-hidden="true">
+          <text x="110" y="22" text-anchor="middle" fill="#8b97a8" font-size="16" font-weight="700">FRENTE</text>
+          <path d="M110 30 l14 18 h-28 z" fill="#8b97a8"/>
+          <rect x="52" y="58" width="116" height="220" rx="26" fill="#1a8e5d" stroke="#35d07f" stroke-width="4"/>
+          <circle cx="88" cy="90" r="12" fill="#fff"/><circle cx="132" cy="90" r="12" fill="#fff"/>
+          <circle cx="88" cy="90" r="5" fill="#1d2622"/><circle cx="132" cy="90" r="5" fill="#1d2622"/>
+          <rect class="at-roda-ok" x="10" y="150" width="38" height="96" rx="10"/>
+          <rect class="at-roda-ok" x="172" y="150" width="38" height="96" rx="10"/>
+          <g transform="translate(29 198)"><path class="at-engrenagem" d="M16.0 0.0 L21.6 4.3 L20.3 8.4 L13.3 8.9 L11.3 11.3 L12.2 18.3 L8.4 20.3 L3.1 15.7 L0.0 16.0 L-4.3 21.6 L-8.4 20.3 L-8.9 13.3 L-11.3 11.3 L-18.3 12.2 L-20.3 8.4 L-15.7 3.1 L-16.0 0.0 L-21.6 -4.3 L-20.3 -8.4 L-13.3 -8.9 L-11.3 -11.3 L-12.2 -18.3 L-8.4 -20.3 L-3.1 -15.7 L-0.0 -16.0 L4.3 -21.6 L8.4 -20.3 L8.9 -13.3 L11.3 -11.3 L18.3 -12.2 L20.3 -8.4 L15.7 -3.1 Z" fill="#ffb020" stroke="#1d2622" stroke-width="3"/><circle r="6" fill="#1d2622"/></g>
+          <g transform="translate(191 198)"><path class="at-engrenagem ao-contrario" d="M16.0 0.0 L21.6 4.3 L20.3 8.4 L13.3 8.9 L11.3 11.3 L12.2 18.3 L8.4 20.3 L3.1 15.7 L0.0 16.0 L-4.3 21.6 L-8.4 20.3 L-8.9 13.3 L-11.3 11.3 L-18.3 12.2 L-20.3 8.4 L-15.7 3.1 L-16.0 0.0 L-21.6 -4.3 L-20.3 -8.4 L-13.3 -8.9 L-11.3 -11.3 L-12.2 -18.3 L-8.4 -20.3 L-3.1 -15.7 L-0.0 -16.0 L4.3 -21.6 L8.4 -20.3 L8.9 -13.3 L11.3 -11.3 L18.3 -12.2 L20.3 -8.4 L15.7 -3.1 Z" fill="#ffb020" stroke="#1d2622" stroke-width="3"/><circle r="6" fill="#1d2622"/></g>
+          <g class="at-certo" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 198 l8 9 l14 -18"/><path d="M180 198 l8 9 l14 -18"/></g>
+        </svg></div>
+        <div class="at-barra"><div class="at-trilho"><i></i></div><b class="at-pct">0%</b></div>
+        <p class="at-nota">Não desligue o Eco</p>
+      </div>
+    </div>
+    <div class="at-tela at-duas" data-tela="festa">
+      <div class="at-palco"></div>
+      <div class="at-conversa"><span class="at-selo"></span><h2>Chegou! Atualização instalada 🎉</h2>
+        <p>Agora o Eco tem força total nos motores e no giro. Falta um teste rapidinho: ver se as rodinhas giram para o lado certo.</p>
+        <div class="at-botoes"><button class="primary grande at-calibrar">Vamos testar as rodinhas 👉</button></div></div>
+    </div>
+    <div class="at-tela at-duas" data-tela="rodas">
+      <div class="at-eco-cima"><svg viewBox="0 0 220 320" aria-label="o Eco visto de cima">
+        <text x="110" y="22" text-anchor="middle" fill="#8b97a8" font-size="16" font-weight="700">FRENTE</text>
+        <path d="M110 30 l14 18 h-28 z" fill="#8b97a8"/>
+        <rect x="52" y="58" width="116" height="220" rx="26" fill="#1a8e5d" stroke="#35d07f" stroke-width="4"/>
+        <circle cx="88" cy="90" r="12" fill="#fff"/><circle cx="132" cy="90" r="12" fill="#fff"/>
+        <circle cx="88" cy="90" r="5" fill="#1d2622"/><circle cx="132" cy="90" r="5" fill="#1d2622"/>
+        <rect class="at-roda" data-roda="e" x="10" y="150" width="38" height="96" rx="10"/>
+        <rect class="at-roda" data-roda="d" x="172" y="150" width="38" height="96" rx="10"/>
+        <text x="29" y="270" text-anchor="middle" fill="#8b97a8" font-size="13">esquerda</text>
+        <text x="191" y="270" text-anchor="middle" fill="#8b97a8" font-size="13">direita</text>
+      </svg></div>
+      <div class="at-conversa">
+        <div class="at-passos"><i></i><i></i></div>
+        <h2>Rodinha <span class="at-n">1</span> de 2</h2>
+        <p>Segure o Eco no ar, com as rodinhas soltas e a frente virada para longe de você, como no desenho.</p>
+        <div class="at-botoes"><button class="primary grande at-girar">▶ Girar uma rodinha</button></div>
+        <div class="at-pergunta at-q-roda"><p><b>Qual rodinha girou?</b> Toque nela no desenho.</p>
+          <button class="at-link at-nenhuma">Nenhuma girou</button></div>
+        <div class="at-pergunta at-q-lado"><p><b>Para que lado ela girou?</b></p>
+          <div class="at-opcoes"><button class="at-frente">⬆️ Para a frente</button><button class="at-tras">⬇️ Para trás</button></div></div>
+      </div>
+    </div>
+    <div class="at-tela at-duas" data-tela="achei">
+      <div class="at-palco"></div>
+      <div class="at-conversa"><h2>Achei! Os fios das rodinhas estão trocados</h2>
+        <p>Sem problema: eu ajusto o Eco para o jeito que ele foi montado. É rapidinho.</p>
+        <div class="at-botoes"><button class="primary grande at-consertar">🔧 Consertar</button></div></div>
+    </div>
+    <div class="at-tela at-duas" data-tela="chao">
+      <div class="at-palco"></div>
+      <div class="at-conversa"><h2></h2>
+        <p>Coloque o Eco no chão, num lugar livre, com a frente para longe de você.</p>
+        <div class="at-botoes"><button class="primary at-andar">▶ Andar para a frente</button></div>
+        <div class="at-pergunta at-q-frente"><p><b>Ele andou para a frente?</b></p>
+          <div class="at-opcoes"><button class="at-frente-sim">👍 Sim</button><button class="at-nao" data-q="frente">👎 Não</button></div>
+          <button class="primary at-girar-chao hidden">▶ Girar para a direita ➡️</button></div>
+        <div class="at-pergunta at-q-giro"><p><b>Ele girou para a direita?</b></p>
+          <div class="at-opcoes"><button class="at-giro-sim">👍 Sim</button><button class="at-nao" data-q="giro">👎 Não</button></div></div>
+      </div>
+    </div>
+    <div class="at-tela at-duas" data-tela="fim">
+      <div class="at-palco"></div>
+      <div class="at-conversa"><h2>Tudo pronto! Seu Eco está novinho 🎉</h2>
+        <p>Atualizado, com as rodinhas conferidas e força total. Bora brincar!</p>
+        <div class="at-botoes"><button class="primary grande at-brincar">🚀 Começar a brincar</button></div>
+        <button class="at-link at-voltar">Algo ficou estranho? Voltar para a versão antiga</button></div>
+    </div>
+    <div class="at-tela at-duas" data-tela="ja">
+      <div class="at-palco"></div>
+      <div class="at-conversa"><h2>Tudo em dia!</h2><p class="at-msg"></p>
+        <p>Se as rodinhas estiverem girando errado, dá para instalar de novo e refazer o teste.</p>
+        <div class="at-botoes"><button class="grande at-refazer">🔁 Instalar e testar de novo</button></div>
+        <button class="at-link at-voltar">Voltar para a versão antiga</button></div>
+    </div>
+    <div class="at-tela at-duas" data-tela="erro">
+      <div class="at-palco"></div>
+      <div class="at-conversa"><h2>Ops, algo não deu certo</h2><p class="at-msg"></p>
+        <div class="at-botoes"><button class="primary at-de-novo">🔁 Tentar de novo</button><button class="at-relatorio">📋 Enviar relatório</button></div>
+        <button class="at-link at-voltar">Voltar para a versão antiga</button></div>
+    </div>
+  </dialog>
+
+  <!-- Relatório da caixa-preta (caixa-preta.js) -->
+  <dialog id="relatorio" class="relatorio">
+    <h2>📋 Relatório para a ecocreator</h2>
+    <p class="muted">É isto que vai. Envie pelo WhatsApp ou pelo e-mail para quem cuida do seu kit.</p>
+    <pre id="rel-texto"></pre>
+    <div class="actions"><button id="rel-apagar" class="small">🗑 Apagar</button><button id="rel-copiar" class="small">📋 Copiar</button>
+      <span class="spacer"></span><button id="rel-fechar">Fechar</button><button id="rel-enviar" class="primary">📤 Enviar</button></div>
+  </dialog>
+
+  <!-- Atualização disponível para o Eco (aviso-atualizacao.js) -->
+  <dialog id="aviso-atualizacao" class="aviso-atualizacao">
+    <h2>🎉 Tem uma atualização para o seu Eco</h2>
+    <p>Força total nos motores e no giro, e um teste rápido para as rodas girarem para o lado certo. Leva uns 5 minutos,
+    com o Eco ligado perto do celular.</p>
+    <p id="aa-versoes" class="muted"></p>
+    <div class="actions"><button id="aa-depois">Depois</button><span class="spacer"></span><button id="aa-agora" class="primary">⬆️ Atualizar agora</button></div>
   </dialog>
 
   <!-- Quem é você? (lista da turma, ou o nome digitado numa aula sem lista) -->
