@@ -86,6 +86,9 @@ function preenche() {
     q('[data-config=autoBrake]').checked = c.autoBrake;
     q('[data-config=brakeDist]').value = c.brakeDist;
     q('[data-de=brakeDist]').textContent = `${c.brakeDist} cm`;
+    // freio desligado: as opções dele ficam cinza e travadas
+    for (const f of dlg.querySelectorAll('.aj-freio-opcoes')) f.disabled = !c.autoBrake;
+    q('.aj-freio-off').classList.toggle('hidden', c.autoBrake);
   }
   q('[data-de=alvoFreio]').textContent = `${q('.aj-alvo-freio').value} cm`;
   q('[data-ajuste=partida]').value = a.partida;
@@ -218,14 +221,19 @@ q('.aj-alvo-freio').addEventListener('input', (e) => { q('[data-de=alvoFreio]').
 const distancia = () => S.carState?.distance ?? P.NO_DISTANCE;
 const temSonarAgora = () => P.hasSonar(S.carState?.line?.port ?? 0) && distancia() !== P.NO_DISTANCE;
 const parado = () => Math.abs(S.carState?.left ?? 0) < 2 && Math.abs(S.carState?.right ?? 0) < 2;
-// vai até a parede na velocidade máxima, com o freio ligado; devolve onde parou (cm) ou null
+// vai até a parede na velocidade máxima, com o freio ligado; devolve onde parou (cm) ou null. O próprio Eco diz
+// quando o freio agiu (STATUS.OBSTACLE na STATE): parou sem isso, foi outra coisa (algo no caminho, roda presa, sinal
+// perdido) e a tentativa não conta para o ajuste (freioAgiu)
+let freioAgiu = false;
 async function ateParede() {
   const t0 = Date.now();
   let paradoDesde = 0;
   let andou = false;
+  let freou = false;
   while (Date.now() - t0 < FREIO_LIMITE_MS) {
     S.transport?.send(P.encodeDrive({ seq: seq++, left: 100, right: 100, flags: 0 }));
     await sleep(100);
+    if (S.carState?.status & P.STATUS.OBSTACLE) freou = true;
     if (!parado()) andou = true;
     if (andou && parado()) {
       paradoDesde ||= Date.now();
@@ -234,7 +242,9 @@ async function ateParede() {
   }
   await anda(0, 0, 0);
   await sleep(300);
-  return andou && parado() ? distancia() : null;
+  if (!andou || !parado()) return null;
+  freioAgiu = freou;
+  return distancia();
 }
 // ré até ficar a ~1 m da parede (o sonar da frente mede a parede se afastando); no máximo 2 s
 async function volta(ate = 90) {
@@ -254,7 +264,8 @@ q('.aj-testar-freio').addEventListener('click', (e) => tarefa(e.target, async ()
   msg('freio', '⏳ Indo até a parede…');
   const parou = await ateParede();
   registra('freio teste', { parou: parou ?? 'não parou', freio: S.car.config.brakeDist });
-  msg('freio', parou === null ? 'Ele não parou sozinho. O freio está ligado? Tem parede na frente?' : `Parou a ${parou} cm da parede.`);
+  msg('freio', parou === null ? 'Ele não parou sozinho. O freio está ligado? Tem parede na frente?'
+    : freioAgiu ? `Parou a ${parou} cm da parede.` : `Parou a ${parou} cm, mas não foi o freio. Tem algo no caminho?`);
 }));
 q('.aj-calibrar-freio').addEventListener('click', (e) => tarefa(e.target, async () => {
   const lista = q('.aj-rodadas-freio');
@@ -264,6 +275,7 @@ q('.aj-calibrar-freio').addEventListener('click', (e) => tarefa(e.target, async 
   // a primeira tentativa começa com o freio bem antecipado: para longe, nunca bate
   let freio = Math.min(60, Math.max(S.car.config.brakeDist, alvo + 20));
   let certas = 0;
+  let estranhas = 0;
   for (let i = 0; i < 6; i++) {
     if (distancia() < 60) {
       msg('freio', '⏳ Dando ré para começar de novo…');
@@ -279,6 +291,15 @@ q('.aj-calibrar-freio').addEventListener('click', (e) => tarefa(e.target, async 
       item.textContent = 'não parou sozinho';
       lista.append(item);
       return msg('freio', '❌ Ele não parou sozinho. Confira se o sonar está encaixado e de frente para a parede.');
+    }
+    if (!freioAgiu) {
+      item.textContent = `parou a ${parou} cm, mas não foi o freio (não conta)`;
+      lista.append(item);
+      registra('calibracao freio', { tentativa: i + 1, parou, freio, alvo, conta: false });
+      if (++estranhas >= 3) return msg('freio', '❌ Ele parou 3 vezes antes de o freio agir. Tem algo no caminho? As rodas giram soltas?');
+      i--;
+      await volta();
+      continue;
     }
     const novo = proximoFreio(freio, parou, alvo);
     const certo = Math.abs(parou - alvo) <= FREIO_TOLERANCIA;

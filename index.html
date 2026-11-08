@@ -394,14 +394,23 @@
           <h2>Freio anti-colisão</h2>
           <p>Com o sonar, o Eco freia sozinho perto de uma parede. Quanto mais rápido, mais cedo ele começa a frear.</p>
           <label class="aj-check"><input type="checkbox" data-config="autoBrake"> Freio automático ligado</label>
-          <label class="aj-campo"><span>Começa a frear a <b class="aj-v" data-de="brakeDist"></b>
-            <small>Mais distância: para mais longe da parede. Menos: chega mais perto.</small></span>
-            <input type="range" min="5" max="60" step="1" data-config="brakeDist"></label>
-          <label class="aj-campo"><span>Quero que ele pare a <b class="aj-v" data-de="alvoFreio"></b> da parede
-            <small>Para a calibração automática.</small></span>
-            <input type="range" min="5" max="40" step="1" value="10" class="aj-alvo-freio"></label>
-          <p class="dica-freio">Coloque o Eco a 1 m de uma parede, de frente para ela, com espaço livre atrás (ele dá ré sozinho entre as tentativas).</p>
-          <div class="at-botoes"><button class="primary aj-calibrar-freio">▶ Calibrar o freio</button><button class="aj-testar-freio">▶ Testar: ir até a parede</button></div>
+          <p class="aj-freio-off hidden">⚠️ Freio desligado: o Eco não freia sozinho perto da parede. Ligue para ajustar.</p>
+          <fieldset class="aj-bloco aj-freio-opcoes">
+            <h3>✋ O ajuste (é o que fica gravado no Eco)</h3>
+            <label class="aj-campo"><span>Começa a frear a <b class="aj-v" data-de="brakeDist"></b>
+              <small>Mais distância: para mais longe da parede. Menos: chega mais perto. Rápido, ele começa um pouco antes.</small></span>
+              <input type="range" min="5" max="60" step="1" data-config="brakeDist"></label>
+            <div class="at-botoes"><button class="aj-testar-freio">▶ Testar: ir até a parede</button></div>
+          </fieldset>
+          <fieldset class="aj-bloco aj-freio-opcoes">
+            <h3>🤖 Calibração automática (acha o ajuste para você)</h3>
+            <p>Você diz onde quer que ele pare; ele vai e volta até a parede e muda o ajuste de cima sozinho até acertar.</p>
+            <label class="aj-campo"><span>Quero que ele pare a <b class="aj-v" data-de="alvoFreio"></b> da parede
+              <small>Só para a calibração: não fica gravado.</small></span>
+              <input type="range" min="5" max="40" step="1" value="10" class="aj-alvo-freio"></label>
+            <p class="dica-freio">Coloque o Eco a 1 m de uma parede, de frente para ela, com espaço livre atrás (ele dá ré sozinho entre as tentativas).</p>
+            <div class="at-botoes"><button class="primary aj-calibrar-freio">▶ Calibrar o freio</button></div>
+          </fieldset>
           <ol class="aj-rodadas aj-rodadas-freio"></ol>
           <p class="aj-msg"></p>
         </section>
@@ -497,11 +506,15 @@
         <div class="at-passos"><i></i><i></i></div>
         <h2>Rodinha <span class="at-n">1</span> de 2</h2>
         <p>Segure o Eco no ar, com as rodinhas soltas e a frente virada para longe de você, como no desenho.</p>
-        <div class="at-botoes"><button class="primary grande at-girar">▶ Girar uma rodinha</button></div>
-        <div class="at-pergunta at-q-roda"><p><b>Qual rodinha girou?</b> Toque nela no desenho.</p>
-          <button class="at-link at-nenhuma">Nenhuma girou</button></div>
-        <div class="at-pergunta at-q-lado"><p><b>Para que lado ela girou?</b></p>
-          <div class="at-opcoes"><button class="at-frente">⬆️ Para a frente</button><button class="at-tras">⬇️ Para trás</button></div></div>
+        <div class="at-teste">
+          <button class="primary grande at-acao at-girar">▶ Girar uma rodinha</button>
+          <div class="at-respostas">
+            <div class="at-pergunta at-q-roda"><p><b>Qual rodinha girou?</b> Toque nela no desenho.</p>
+              <button class="at-link at-nenhuma">Nenhuma girou</button></div>
+            <div class="at-pergunta at-q-lado"><p><b>Para que lado ela girou?</b></p>
+              <div class="at-opcoes"><button class="at-frente">⬆️ Para a frente</button><button class="at-tras">⬇️ Para trás</button></div></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="at-tela at-duas" data-tela="achei">
@@ -514,12 +527,16 @@
       <div class="at-palco"></div>
       <div class="at-conversa"><h2></h2>
         <p>Coloque o Eco no chão, num lugar livre, com a frente para longe de você.</p>
-        <div class="at-botoes"><button class="primary at-andar">▶ Andar para a frente</button></div>
-        <div class="at-pergunta at-q-frente"><p><b>Ele andou para a frente?</b></p>
-          <div class="at-opcoes"><button class="at-frente-sim">👍 Sim</button><button class="at-nao" data-q="frente">👎 Não</button></div>
-          <button class="primary at-girar-chao hidden">▶ Girar para a direita ➡️</button></div>
-        <div class="at-pergunta at-q-giro"><p><b>Ele girou para a direita?</b></p>
-          <div class="at-opcoes"><button class="at-giro-sim">👍 Sim</button><button class="at-nao" data-q="giro">👎 Não</button></div></div>
+        <div class="at-teste">
+          <button class="primary grande at-acao at-andar">▶ Andar para a frente</button>
+          <div class="at-respostas"><div class="at-pergunta at-q-frente"><p><b>Ele andou para a frente?</b></p>
+            <div class="at-opcoes"><button class="at-frente-sim">👍 Sim</button><button class="at-nao" data-q="frente">👎 Não</button></div></div></div>
+        </div>
+        <div class="at-teste at-t-giro hidden">
+          <button class="primary grande at-acao at-girar-chao">▶ Girar para a direita ➡️</button>
+          <div class="at-respostas"><div class="at-pergunta at-q-giro"><p><b>Ele girou para a direita?</b></p>
+            <div class="at-opcoes"><button class="at-giro-sim">👍 Sim</button><button class="at-nao" data-q="giro">👎 Não</button></div></div></div>
+        </div>
       </div>
     </div>
     <div class="at-tela at-duas" data-tela="fim">

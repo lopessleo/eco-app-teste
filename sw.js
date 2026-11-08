@@ -2,7 +2,7 @@
 // Estratégia "rede primeiro": com internet sempre pega a versão nova; sem internet usa o cache.
 // A lista tem que ter TODOS os arquivos que o app usa (o teste tests/unit/app-files.test.mjs confere).
 
-const CACHE = 'carrinho-v29';
+const CACHE = 'carrinho-v30';
 const FILES = [
   './',
   'index.html',

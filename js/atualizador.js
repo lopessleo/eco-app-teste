@@ -200,7 +200,8 @@ function chao(consertou = false) {
   mascote(t.querySelector('.at-palco'), { cara: 'feliz', pose: 'apontando' });
   t.querySelector('.at-q-frente').classList.remove('on');
   t.querySelector('.at-q-giro').classList.remove('on');
-  t.querySelector('.at-girar-chao').classList.add('hidden');
+  t.querySelector('.at-t-giro').classList.add('hidden');
+  t.querySelector('.at-frente-sim').classList.remove('on');
 }
 
 // ---------- abrir ----------
@@ -275,7 +276,10 @@ chaoT.querySelector('.at-andar').addEventListener('click', async (e) => {
   e.target.disabled = false;
   chaoT.querySelector('.at-q-frente').classList.add('on');
 });
-chaoT.querySelector('.at-frente-sim').addEventListener('click', () => chaoT.querySelector('.at-girar-chao').classList.remove('hidden'));
+chaoT.querySelector('.at-frente-sim').addEventListener('click', (e) => {
+  e.currentTarget.classList.add('on');
+  chaoT.querySelector('.at-t-giro').classList.remove('hidden');
+});
 chaoT.querySelector('.at-girar-chao').addEventListener('click', async (e) => {
   e.target.disabled = true;
   await gira(60, -60, 800);
